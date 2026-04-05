@@ -1,6 +1,7 @@
 package com.damian.mobileapi.auth;
 
 import com.damian.mobileapi.domain.User;
+import com.damian.mobileapi.exception.EmailAlreadyExistsException;
 import com.damian.mobileapi.exception.UnauthorizedException;
 import com.damian.mobileapi.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,22 @@ public class AuthService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+    }
+
+    public RegisterResponse register(RegisterRequest request) {
+        boolean exists = userRepository.findByEmail(request.email()).isPresent();
+
+        if (exists) {
+            throw new EmailAlreadyExistsException("Email is already in use");
+        }
+
+        User user = new User();
+        user.setEmail(request.email());
+        user.setPasswordHash(passwordEncoder.encode(request.password()));
+
+        User savedUser = userRepository.save(user);
+
+        return new RegisterResponse(savedUser.getId(), savedUser.getEmail());
     }
 
     public LoginResponse login(LoginRequest request) {
