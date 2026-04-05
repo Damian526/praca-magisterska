@@ -13,6 +13,11 @@ spring:
       properties:
         hibernate:
           format_sql: true
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: "mobileapi"
+    access-token-minutes: 60
 
   flyway:
     enabled: true
