@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    container_name: rn_ionic_db
+    environment:
+      POSTGRES_DB: rn_ionic
+      POSTGRES_USER: rnuser
+      POSTGRES_PASSWORD: rnpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - rn_ionic_pg:/var/lib/postgresql/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: rn_ionic_mailpit
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  rn_ionic_pg:
