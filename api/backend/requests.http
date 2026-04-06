@@ -1,0 +1,27 @@
+### Register
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "email": "test2012@test.com",
+  "password": "test123"
+}
+
+### Login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "test2012@test.com",
+  "password": "test123"
+}
+
+### Test email endpoint
+GET http://localhost:8080/test-email?to=test1@test.com
+
+### Protected endpoint without token - should return 401
+GET http://localhost:8080/services
+
+### Protected endpoint with token
+GET http://localhost:8080/services
+Authorization: Bearer PASTE_TOKEN_HERE

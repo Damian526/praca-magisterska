@@ -1,9 +1,6 @@
 package com.damian.mobileapi.config;
 
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.OctetSequenceKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,18 +20,20 @@ public class JwtConfig {
 
     @Bean
     public SecretKey jwtSecretKey(JwtProperties jwtProperties) {
-        return new SecretKeySpec(
-                jwtProperties.getSecret().getBytes(StandardCharsets.UTF_8),
-                "HmacSHA256"
-        );
+        String secret = jwtProperties.getSecret();
+        if (secret == null || secret.length() < 32 || secret.equals("${JWT_SECRET}")) {
+            throw new IllegalArgumentException(
+                "JWT Secret is not properly configured. It must be at least 32 characters long. " +
+                "Make sure the environment variable JWT_SECRET is passed successfully, " +
+                "current value is either literal '${JWT_SECRET}' or too short."
+            );
+        }
+        return new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
     @Bean
     public JwtEncoder jwtEncoder(SecretKey jwtSecretKey) {
-        OctetSequenceKey octetSequenceKey = new OctetSequenceKey.Builder(jwtSecretKey).build();
-        ImmutableJWKSet<SecurityContext> jwkSource =
-                new ImmutableJWKSet<>(new JWKSet(octetSequenceKey));
-        return new NimbusJwtEncoder(jwkSource);
+        return new NimbusJwtEncoder(new ImmutableSecret<>(jwtSecretKey));
     }
 
     @Bean

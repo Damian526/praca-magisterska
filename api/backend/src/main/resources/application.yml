@@ -6,6 +6,17 @@ spring:
     url: jdbc:postgresql://192.168.100.162:5432/rn_ionic
     username: rnuser
     password: rnpass
+  mail:
+    host: 192.168.100.162
+    port: 1025
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
 
   jpa:
     hibernate:
@@ -15,7 +26,7 @@ spring:
           format_sql: true
 app:
   jwt:
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:8f4c2d91b7e64a3fa2c8d5e1f7a9b3c6eid8f1a5b7q9d2e6f3a8c1b4d7e9f2a2}
     issuer: "mobileapi"
     access-token-minutes: 60
 
