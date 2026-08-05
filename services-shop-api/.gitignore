@@ -3,3 +3,8 @@ dist/
 .env
 *.db
 *.db-journal
+/src/generated/prisma
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
