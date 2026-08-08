@@ -1,0 +1,123 @@
+name: services-shop
+
+services:
+  # ══════════════════════════════════════════════════════════
+  #  BAZA DANYCH — uruchamiana zawsze
+  # ══════════════════════════════════════════════════════════
+  db:
+    # ⚠️ WERSJA PRZYPIĘTA NA SZTYWNO — nigdy :latest
+    # Tę dokładną wersję wpisujesz w rozdziale 2.4.1.2 pracy.
+    image: postgres:16.4-alpine
+    container_name: shop_db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop_dev_password
+      POSTGRES_DB: services_shop
+      # Wyłącza sprawdzanie lokalizacji przy inicjalizacji — szybszy start
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      TZ: Europe/Warsaw
+      PGTZ: Europe/Warsaw
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+    # ── Strojenie pod POWTARZALNOŚĆ POMIARU, nie pod maksymalną wydajność ──
+    command:
+      - "postgres"
+      # Cały zbiór danych (500 usług) zmieści się w pamięci → brak I/O dysku
+      # przy odczytach → dużo mniejszy rozrzut czasów zapytań
+      - "-c"
+      - "shared_buffers=512MB"
+      - "-c"
+      - "effective_cache_size=1536MB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "max_connections=50"
+      # Autovacuum uśpiony na godzinę: nie chcemy, żeby odpalił się
+      # w losowym momencie w środku 30 powtórzeń i zaburzył czasy.
+      # Ręczny VACUUM ANALYZE robimy MIĘDZY seriami (rozdział 6).
+      - "-c"
+      - "autovacuum_naptime=3600"
+      # Brak logowania zapytań = brak narzutu I/O na logi
+      - "-c"
+      - "log_statement=none"
+      - "-c"
+      - "log_min_duration_statement=-1"
+      # Zapis do WAL bez czekania na fsync dysku.
+      # Usuwa największe źródło skoków czasu przy POST /api/orders.
+      # Ryzyko: utrata kilku ostatnich transakcji przy nagłym padzie
+      # — bez znaczenia dla stanowiska badawczego. UZASADNIJ TO W PRACY.
+      - "-c"
+      - "synchronous_commit=off"
+
+    # Limity zasobów — kontener ma zawsze tyle samo, niezależnie
+    # od tego, co jeszcze działa na laptopie
+    mem_limit: 2g
+    cpus: 2.0
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shop -d services_shop"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  # ══════════════════════════════════════════════════════════
+  #  pgAdmin — podgląd bazy przez przeglądarkę
+  #  ⚠️ WYŁĄCZ NA CZAS POMIARÓW (odpytuje bazę w tle)
+  #  Uruchamiany tylko przez: docker compose --profile tools up -d
+  # ══════════════════════════════════════════════════════════
+  pgadmin:
+    image: dpage/pgadmin4:8.12
+    container_name: shop_pgadmin
+    profiles: ["tools"]
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.dev
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ══════════════════════════════════════════════════════════
+  #  BACKEND — TYLKO DO DEMONSTRACJI KONTENERYZACJI
+  #  ⚠️ NIE UŻYWAJ DO POMIARÓW (rozdział 1)
+  #  Uruchamiany tylko przez: docker compose --profile full up -d
+  # ══════════════════════════════════════════════════════════
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shop_api
+    profiles: ["full"]
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOST: 0.0.0.0
+      DATABASE_URL: postgresql://shop:shop_dev_password@db:5432/services_shop?schema=public&connection_limit=10
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
+      LOG_LEVEL: warn
+      RATE_LIMIT_MAX: 100000
+      TEST_MODE: 0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./static:/app/static:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
+    name: shop_db_data
