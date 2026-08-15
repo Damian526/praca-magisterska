@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:3000/api
+
+### List categories
+GET {{baseUrl}}/catalog/categories
+
+### List services (paginated, filtered)
+GET {{baseUrl}}/catalog/services?page=1&limit=10&sort=price_asc
+
+### Search services by name
+GET {{baseUrl}}/catalog/services?q=konsult
+
+### Single service by id (replace with a real id from the list above)
+GET {{baseUrl}}/catalog/services/srv_095

@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:3000/api
+
+### Register a new user
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "jan@example.com",
+  "password": "12345678",
+  "fullName": "Jan Kowalski"
+}
+
+### Login (grab the token for the next request)
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "jan@example.com",
+  "password": "12345678"
+}
+
+### Me — uses the token from the login response above
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{login.response.body.token}}

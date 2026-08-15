@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:3000/api
+@adminToken = token-do-endpointow-badawczych
+
+### Basic liveness check
+GET {{baseUrl}}/health
+
+### Deeper ops health check (DB connectivity + service count)
+GET {{baseUrl}}/ops/health
+
+### Warm up query planner / connections before a measurement run
+GET {{baseUrl}}/ops/warmup
+
+### Quick reset — clears orders only (between repetitions)
+POST {{baseUrl}}/ops/admin/reseed
+X-Admin-Token: {{adminToken}}
