@@ -10,9 +10,8 @@ import { createOrder, listOrders, getOrder } from "./orders.service.js";
 
 export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
   // ⭐ Hook na poziomie CAŁEGO modułu.
-  // Dzięki enkapsulacji (rozdz. 0.2) obowiązuje wyłącznie wewnątrz
   // tego pluginu — moduł katalogu pozostaje publiczny.
-  // Nie musisz powtarzać `onRequest` przy każdej trasie osobno.
+  // Nie trzeba powtarzać `onRequest` przy każdej trasie osobno.
   app.addHook("onRequest", app.authenticate);
 
   /* ---- POST /api/orders ---- */
