@@ -1,49 +1,48 @@
-import { Navigate, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react'
+import { IonReactRouter } from '@ionic/react-router'
+import { Route, Redirect } from 'react-router-dom'
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import { AuthProvider } from './core/auth'
+import { CartProvider } from './core/cart'
 
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import SplashScreen        from './screens/SplashScreen'
+import LoginScreen         from './screens/LoginScreen'
+import CatalogScreen       from './screens/CatalogScreen'
+import SearchScreen        from './screens/SearchScreen'
+import ServiceDetailScreen from './screens/ServiceDetailScreen'
+import CartScreen          from './screens/CartScreen'
+import CheckoutScreen      from './screens/CheckoutScreen'
+import OrdersScreen        from './screens/OrdersScreen'
 
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+/* wymagane style Ionica */
+import '@ionic/react/css/core.css'
+import '@ionic/react/css/normalize.css'
+import '@ionic/react/css/structure.css'
+import '@ionic/react/css/typography.css'
+import './theme/variables.css'
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+setupIonicReact()
 
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
-
-/* Theme variables */
-import './theme/variables.css';
-
-setupIonicReact();
-
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" element={<Home />} />
-        <Route path="/" element={<Navigate to="/home" replace />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
-
-export default App;
+export default function App() {
+  return (
+    <IonApp>
+      <AuthProvider>
+        <CartProvider>
+          <IonReactRouter>
+            <IonRouterOutlet>
+              <Route exact path="/" component={SplashScreen} />
+              <Route exact path="/login" component={LoginScreen} />
+              <Route exact path="/catalog" component={CatalogScreen} />
+              <Route exact path="/search" component={SearchScreen} />
+              <Route exact path="/service/:id" component={ServiceDetailScreen} />
+              <Route exact path="/cart" component={CartScreen} />
+              <Route exact path="/checkout" component={CheckoutScreen} />
+              <Route exact path="/orders" component={OrdersScreen} />
+              <Redirect to="/" />
+            </IonRouterOutlet>
+          </IonReactRouter>
+        </CartProvider>
+      </AuthProvider>
+    </IonApp>
+  )
+}
