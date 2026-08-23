@@ -1,0 +1,5 @@
+{
+  "eslint.workingDirectories": [
+    { "directory": "ShopReactNative", "changeProcessCWD": true }
+  ]
+}
