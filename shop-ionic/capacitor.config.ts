@@ -1,9 +1,13 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'shop-ionic',
-  webDir: 'dist'
+  appId: "com.shop.ionic",
+  appName: "shop-ionic",
+  webDir: "dist",
+  server: {
+    cleartext: true,
+    androidScheme: "http",
+  },
 };
 
 export default config;

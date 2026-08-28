@@ -1,0 +1,10 @@
+.chips {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0 var(--sp-lg);
+  gap: var(--sp-sm);
+}
+.chips ion-chip { flex: 0 0 auto; }   /* chipy nie zwężają się, przewijają w poziomie */
+.row { --min-height: var(--list-item-height); }
+.price { color: var(--app-primary); font-weight: 700; }
