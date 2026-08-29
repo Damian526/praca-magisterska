@@ -23,7 +23,7 @@ export default function ServiceDetailScreen() {
 
   useEffect(() => {
     (async () => {
-      const { data, serverMs } = await apiService(id)
+      const { data, serverMs } = await apiService(id!)
       setService(data)
 
       // ⭐ WSKAŹNIK 2 — od kliknięcia do gotowego ekranu

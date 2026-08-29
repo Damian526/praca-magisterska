@@ -11,8 +11,12 @@ type CartCtx = {
   count: number
 }
 
-const Ctx = createContext<CartCtx>(null as any)
-export const useCart = () => useContext(Ctx)
+const Ctx = createContext<CartCtx | undefined>(undefined)
+export function useCart() {
+  const ctx = useContext(Ctx)
+  if (!ctx) throw new Error('useCart must be used within CartProvider')
+  return ctx
+}
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([])

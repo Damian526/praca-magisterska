@@ -21,8 +21,9 @@ export default function LoginScreen() {
       if (mode === 'login') await login(email, password)
       else await register(email, password, TEST_USER.fullName)
       navigate('/catalog', { replace: true })
-    } catch (e: any) {
-      setError(e.message ?? 'Nie udało się zalogować')
+    } catch (e) {
+      const message = e instanceof Error ? e.message : 'Nie udało się zalogować'
+      setError(message)
     } finally {
       setBusy(false)
     }

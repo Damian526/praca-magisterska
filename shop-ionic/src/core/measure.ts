@@ -2,8 +2,7 @@ import { API_URL, ADMIN_TOKEN, APP_VERSION } from './config';
 import { PLATFORM } from '../platform/identity';
 
 export function now(): number {
-  const p = (globalThis as any).performance;
-  return typeof p?.now === 'function' ? p.now() : Date.now();
+  return globalThis.performance?.now() ?? Date.now();
 }
 
 export function afterPaint(cb: () => void): void {
@@ -78,7 +77,7 @@ export function record(
     extra: opts?.extra,
     recordedAt: new Date().toISOString(),
   });
-  if (__DEV__) console.log(`[POMIAR] ${metric} = ${value.toFixed(2)} ${unit}`);
+  if (import.meta.env.DEV) console.log(`[POMIAR] ${metric} = ${value.toFixed(2)} ${unit}`);
 }
 
 /** Wywołuj DOPIERO po zakończeniu całego scenariusza. */
@@ -89,7 +88,7 @@ export async function flush(): Promise<number> {
     platform: PLATFORM,
     deviceModel,
     osVersion,
-    buildType: __DEV__ ? 'debug' : 'release',
+    buildType: import.meta.env.DEV ? 'debug' : 'release',
     appVersion: APP_VERSION,
     measurements: [...buffer],
   };

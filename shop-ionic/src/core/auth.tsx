@@ -14,8 +14,12 @@ type AuthCtx = {
   logout: () => Promise<void>
 }
 
-const Ctx = createContext<AuthCtx>(null as any)
-export const useAuth = () => useContext(Ctx)
+const Ctx = createContext<AuthCtx | undefined>(undefined)
+export function useAuth() {
+  const ctx = useContext(Ctx)
+  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
+  return ctx
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)

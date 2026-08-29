@@ -1,7 +1,8 @@
 import {
   IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonContent,
   IonList, IonItem, IonThumbnail, IonLabel, IonImg,
-  IonInfiniteScroll, IonInfiniteScrollContent
+  IonInfiniteScroll, IonInfiniteScrollContent,
+  type InfiniteScrollCustomEvent
 } from '@ionic/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -31,7 +32,7 @@ export default function CatalogScreen() {
     if (p === 1 && !startupRecorded.current) {
       startupRecorded.current = true
       afterPaint(() => {
-        const startupMs = now() - (globalThis as any).__APP_START__
+        const startupMs = now() - globalThis.__APP_START__
         record('S1', 'startup_ms', startupMs, 'ms', {
           serverMs: serverMs ?? undefined,
           extra: { listSize: PAGE_SIZE }
@@ -48,7 +49,7 @@ export default function CatalogScreen() {
   }, [navigate])
 
   // doładowanie kolejnej strony (odpowiednik onEndReached z FlatList)
-  const loadMore = useCallback(async (e: any) => {
+  const loadMore = useCallback(async (e: InfiniteScrollCustomEvent) => {
     if (page < totalPages) await load(page + 1)
     e.target.complete()   // WYMAGANE: mówi IonInfiniteScroll, że skończył
   }, [page, totalPages, load])
