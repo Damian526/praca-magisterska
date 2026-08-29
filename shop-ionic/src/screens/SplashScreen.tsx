@@ -9,8 +9,17 @@ export default function SplashScreen() {
 
   useEffect(() => {
     if (!ready) return
-    // replace, nie push — splash znika z historii (jak replace w RN)
-    navigate(user ? '/catalog' : '/login', { replace: true })
+    let cancelled = false
+    // Czekamy, aż <ion-router-outlet> faktycznie się zdefiniuje (Stencil
+    // podłącza go asynchronicznie) — redirect wystrzelony wcześniej potrafi
+    // trwale rozjechać outlet z historią reacta (nawigacja przestaje działać
+    // po zimnym starcie, mimo że history.length rośnie).
+    customElements.whenDefined('ion-router-outlet').then(() => {
+      if (cancelled) return
+      // replace, nie push — splash znika z historii (jak replace w RN)
+      navigate(user ? '/catalog' : '/login', { replace: true })
+    })
+    return () => { cancelled = true }
   }, [ready, user, navigate])
 
   return (

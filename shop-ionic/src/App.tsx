@@ -1,6 +1,5 @@
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react'
+import { IonApp, IonRoute, IonRouterOutlet, setupIonicReact } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { Route, Navigate } from 'react-router-dom'
 
 import { AuthProvider } from './core/auth'
 import { CartProvider } from './core/cart'
@@ -28,19 +27,18 @@ export default function App() {
     <IonApp>
       <AuthProvider>
         <CartProvider>
-          <IonReactRouter>
-            <IonRouterOutlet>
-              <Route path="/" element={<SplashScreen />} />
-              <Route path="/login" element={<LoginScreen />} />
-              <Route path="/catalog" element={<CatalogScreen />} />
-              <Route path="/search" element={<SearchScreen />} />
-              <Route path="/service/:id" element={<ServiceDetailScreen />} />
-              <Route path="/cart" element={<CartScreen />} />
-              <Route path="/checkout" element={<CheckoutScreen />} />
-              <Route path="/orders" element={<OrdersScreen />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </IonRouterOutlet>
-          </IonReactRouter>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <IonRoute path="/"             element={<SplashScreen />} />
+            <IonRoute path="/login"        element={<LoginScreen />} />
+            <IonRoute path="/catalog"      element={<CatalogScreen />} />
+            <IonRoute path="/search"       element={<SearchScreen />} />
+            <IonRoute path="/service/:id"  element={<ServiceDetailScreen />} />
+            <IonRoute path="/cart"         element={<CartScreen />} />
+            <IonRoute path="/checkout"     element={<CheckoutScreen />} />
+            <IonRoute path="/orders"       element={<OrdersScreen />} />
+          </IonRouterOutlet>
+        </IonReactRouter>
         </CartProvider>
       </AuthProvider>
     </IonApp>

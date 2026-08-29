@@ -6,6 +6,8 @@ import rateLimit from "@fastify/rate-limit";
 export default fp(async (app) => {
   await app.register(helmet, {
     contentSecurityPolicy: false, // wyłączone, bo serwujemy Swagger UI
+    // domyślne "same-origin" blokuje <img> z aplikacji mobilnej (inny origin)
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   });
 
   await app.register(cors, {
