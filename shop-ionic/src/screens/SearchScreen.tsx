@@ -57,7 +57,7 @@ export default function SearchScreen() {
           value={q}
           onIonInput={e => setQ(e.detail.value ?? '')}
           placeholder="Szukaj usługi..."
-          debounce={0}                {/* debounce robimy sami w useEffect */}
+          debounce={0}
         />
 
         {/* poziomy pasek kategorii — chipy */}
