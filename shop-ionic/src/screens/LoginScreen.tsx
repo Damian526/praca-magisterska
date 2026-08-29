@@ -37,6 +37,7 @@ export default function LoginScreen() {
           label="Adres e-mail" labelPlacement="stacked" fill="outline"
           type="email" value={email}
           onIonInput={e => setEmail(e.detail.value!)}
+          style={{ marginTop: 'var(--sp-md)' }}
         />
         <IonInput
           label="Hasło" labelPlacement="stacked" fill="outline"
