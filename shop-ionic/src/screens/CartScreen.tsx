@@ -49,6 +49,7 @@ export default function CartScreen() {
           <IonTitle>Razem: {formatPrice(total)}</IonTitle>
           <IonButtons slot="end">
             <IonButton
+              id="btn-checkout"
               fill="solid"
               disabled={lines.length === 0}
               onClick={() => history.push('/checkout')}

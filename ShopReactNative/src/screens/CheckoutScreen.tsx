@@ -68,7 +68,7 @@ export default function CheckoutScreen({ navigation }: Props) {
       <Text style={s.total}>Do zapłaty: {formatPrice(total)}</Text>
       {error && <Text style={s.error}>{error}</Text>}
 
-      <Pressable style={s.btn} onPress={submit} disabled={busy || lines.length === 0}>
+      <Pressable testID="btn-submit-order" style={s.btn} onPress={submit} disabled={busy || lines.length === 0}>
         {busy ? <ActivityIndicator color="#fff" /> : <Text style={s.btnTxt}>Złóż zamówienie</Text>}
       </Pressable>
     </View>

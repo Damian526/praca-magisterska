@@ -40,6 +40,7 @@ export default function CartScreen({ navigation }: Props) {
       <View style={s.footer}>
         <Text style={s.total}>Razem: {formatPrice(total)}</Text>
         <Pressable
+          testID="btn-checkout"
           style={[s.btn, lines.length === 0 && s.btnOff]}
           disabled={lines.length === 0}
           onPress={() => navigation.navigate('Checkout')}

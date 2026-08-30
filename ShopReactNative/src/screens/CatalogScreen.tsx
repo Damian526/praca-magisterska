@@ -57,8 +57,8 @@ export default function CatalogScreen({ navigation }: Props) {
     navigation.navigate('ServiceDetail', { serviceId, measureStart: now() })
   }, [navigation])
 
-  const renderItem = useCallback(({ item }: { item: Service }) => (
-    <Pressable style={s.row} onPress={() => openDetail(item.id)}>
+  const renderItem = useCallback(({ item, index }: { item: Service; index: number }) => (
+    <Pressable testID={`service-item-${index}`} style={s.row} onPress={() => openDetail(item.id)}>
       <Image
         source={{ uri: `${API_URL}${item.imageUrl}` }}
         style={s.thumb}
@@ -75,13 +75,13 @@ export default function CatalogScreen({ navigation }: Props) {
   return (
     <View style={s.wrap}>
       <View style={s.bar}>
-        <Pressable onPress={() => navigation.navigate('Search')}>
+        <Pressable testID="nav-search" onPress={() => navigation.navigate('Search')}>
           <Text style={s.barLink}>Szukaj</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Orders')}>
+        <Pressable testID="nav-orders" onPress={() => navigation.navigate('Orders')}>
           <Text style={s.barLink}>Historia</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Cart')}>
+        <Pressable testID="nav-cart" onPress={() => navigation.navigate('Cart')}>
           <Text style={s.barLink}>Koszyk ({count})</Text>
         </Pressable>
       </View>

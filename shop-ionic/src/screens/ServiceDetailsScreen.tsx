@@ -58,7 +58,7 @@ export default function ServiceDetailScreen() {
               {formatPrice(service.price)}
             </p>
             <p>{service.description}</p>
-            <IonButton expand="block" onClick={() => { add(service); history.push('/cart') }}>
+            <IonButton id="btn-add-to-cart" expand="block" onClick={() => { add(service); history.push('/cart') }}>
               Dodaj do koszyka
             </IonButton>
           </>

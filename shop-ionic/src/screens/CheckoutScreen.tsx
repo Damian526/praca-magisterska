@@ -84,7 +84,7 @@ export default function CheckoutScreen() {
 
         {error && <IonText color="danger"><p>{error}</p></IonText>}
 
-        <IonButton expand="block" onClick={submit} disabled={busy || lines.length === 0}>
+        <IonButton id="btn-submit-order" expand="block" onClick={submit} disabled={busy || lines.length === 0}>
           {busy ? <IonSpinner /> : 'Złóż zamówienie'}
         </IonButton>
       </IonContent>

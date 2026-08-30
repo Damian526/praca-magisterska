@@ -48,7 +48,7 @@ export default function ServiceDetailScreen({ route, navigation }: Props) {
         <Text style={s.price}>{formatPrice(service.price)}</Text>
         <Text style={s.desc}>{service.description}</Text>
 
-        <Pressable style={s.btn} onPress={() => { add(service); navigation.navigate('Cart') }}>
+        <Pressable testID="btn-add-to-cart" style={s.btn} onPress={() => { add(service); navigation.navigate('Cart') }}>
           <Text style={s.btnTxt}>Dodaj do koszyka</Text>
         </Pressable>
       </View>

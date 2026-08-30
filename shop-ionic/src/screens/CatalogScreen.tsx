@@ -59,17 +59,17 @@ export default function CatalogScreen() {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
-            <IonButton onClick={() => history.push('/search')}>Szukaj</IonButton>
-            <IonButton onClick={() => history.push('/orders')}>Historia</IonButton>
-            <IonButton onClick={() => history.push('/cart')}>Koszyk ({count})</IonButton>
+            <IonButton id="nav-search" onClick={() => history.push('/search')}>Szukaj</IonButton>
+            <IonButton id="nav-orders" onClick={() => history.push('/orders')}>Historia</IonButton>
+            <IonButton id="nav-cart" onClick={() => history.push('/cart')}>Koszyk ({count})</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
 
       <IonContent>
         <IonList>
-          {items.map(item => (
-            <IonItem key={item.id} button onClick={() => openDetail(item.id)} className="row">
+          {items.map((item, index) => (
+            <IonItem id={`service-item-${index}`} key={item.id} button onClick={() => openDetail(item.id)} className="row">
               <IonThumbnail slot="start" className="thumb">
                 <IonImg src={`${API_URL}${item.imageUrl}`} />
               </IonThumbnail>
