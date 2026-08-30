@@ -8,7 +8,7 @@ import type { RootStackParamList } from '../navigation/types'
 import { apiServices } from '../core/api'
 import { API_URL, PAGE_SIZE } from '../core/config'
 import { formatPrice } from '../core/format'
-import { now, afterPaint, record } from '../core/measure'
+import { now, afterPaint, record, flush, pendingCount } from '../core/measure'
 import { useCart } from '../core/cart'
 import { COLORS, FONT, SPACING, LIST_ITEM_HEIGHT, THUMB_SIZE } from '../core/theme'
 import type { Service } from '../core/types'
@@ -21,6 +21,7 @@ export default function CatalogScreen({ navigation }: Props) {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
   const startupRecorded = useRef(false)
 
   const load = useCallback(async (p: number) => {
@@ -75,6 +76,9 @@ export default function CatalogScreen({ navigation }: Props) {
   return (
     <View style={s.wrap}>
       <View style={s.bar}>
+        <Pressable testID="btn-flush" onPress={async () => { await flush(); setSent(true) }}>
+          <Text style={s.barLink}>{sent ? 'Wysłano' : `⏱ ${pendingCount()}`}</Text>
+        </Pressable>
         <Pressable testID="nav-search" onPress={() => navigation.navigate('Search')}>
           <Text style={s.barLink}>Szukaj</Text>
         </Pressable>

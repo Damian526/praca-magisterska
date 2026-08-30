@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 import { apiServices } from '../core/api'
 import { API_URL, PAGE_SIZE } from '../core/config'
 import { formatPrice } from '../core/format'
-import { now, afterPaint, record } from '../core/measure'
+import { now, afterPaint, record, flush, pendingCount } from '../core/measure'
 import { useCart } from '../core/cart'
 import type { Service } from '../core/types'
 import './Catalog.css'
@@ -20,6 +20,7 @@ export default function CatalogScreen() {
   const [items, setItems] = useState<Service[]>([])
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const [sent, setSent] = useState(false)
   const startupRecorded = useRef(false)
 
   const load = useCallback(async (p: number) => {
@@ -59,6 +60,9 @@ export default function CatalogScreen() {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
+            <IonButton id="btn-flush" onClick={async () => { await flush(); setSent(true) }}>
+              {sent ? 'Wysłano' : `⏱ ${pendingCount()}`}
+            </IonButton>
             <IonButton id="nav-search" onClick={() => history.push('/search')}>Szukaj</IonButton>
             <IonButton id="nav-orders" onClick={() => history.push('/orders')}>Historia</IonButton>
             <IonButton id="nav-cart" onClick={() => history.push('/cart')}>Koszyk ({count})</IonButton>

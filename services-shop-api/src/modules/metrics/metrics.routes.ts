@@ -41,6 +41,22 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
         cpu_percent: "CPU_PERCENT",
       } as const;
 
+      const counts = new Map<string, number>();
+      for (const m of b.measurements) {
+        const key = `${m.scenario}|${m.metric}`;
+        if (!counts.has(key)) {
+          const n = await app.prisma.measurement.count({
+            where: {
+              runId: b.runId,
+              platform: PLATFORM[b.platform],
+              scenario: m.scenario,
+              metric: METRIC[m.metric],
+            },
+          });
+          counts.set(key, n);
+        }
+      }
+
       await app.prisma.measurement.createMany({
         data: b.measurements.map((m) => ({
           runId: b.runId,
@@ -51,7 +67,12 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
           appVersion: b.appVersion,
           scenario: m.scenario, // S1/S2/S3 — takie same po obu stronach
           metric: METRIC[m.metric],
-          iteration: m.iteration,
+          iteration: (() => {
+            const key = `${m.scenario}|${m.metric}`;
+            const n = counts.get(key)! + 1;
+            counts.set(key, n);
+            return n;
+          })(),
           value: m.value,
           unit: m.unit,
           serverMs: m.serverMs ?? null,
