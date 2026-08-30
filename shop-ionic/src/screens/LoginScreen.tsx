@@ -3,13 +3,13 @@ import {
   IonInput, IonButton, IonText, IonSpinner
 } from '@ionic/react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useAuth } from '../core/auth'
 import { TEST_USER } from '../core/config'
 
 export default function LoginScreen() {
   const { login, register } = useAuth()
-  const navigate = useNavigate()
+  const history = useHistory()
   const [email, setEmail] = useState(TEST_USER.email)
   const [password, setPassword] = useState(TEST_USER.password)
   const [busy, setBusy] = useState(false)
@@ -20,7 +20,7 @@ export default function LoginScreen() {
     try {
       if (mode === 'login') await login(email, password)
       else await register(email, password, TEST_USER.fullName)
-      navigate('/catalog', { replace: true })
+      history.replace('/catalog')
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Nie udało się zalogować'
       setError(message)

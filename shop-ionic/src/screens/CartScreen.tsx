@@ -2,12 +2,12 @@ import {
   IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
   IonContent, IonList, IonItem, IonLabel, IonButton, IonFooter, IonText
 } from '@ionic/react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useCart } from '../core/cart'
 import { formatPrice } from '../core/format'
 
 export default function CartScreen() {
-  const navigate = useNavigate()
+  const history = useHistory()
   const { lines, setQty, remove, total } = useCart()
 
   return (
@@ -51,7 +51,7 @@ export default function CartScreen() {
             <IonButton
               fill="solid"
               disabled={lines.length === 0}
-              onClick={() => navigate('/checkout')}
+              onClick={() => history.push('/checkout')}
             >
               Przejdź do zamówienia
             </IonButton>

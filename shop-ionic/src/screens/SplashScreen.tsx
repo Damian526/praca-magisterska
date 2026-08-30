@@ -1,26 +1,17 @@
 import { IonPage, IonContent, IonSpinner } from '@ionic/react'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useAuth } from '../core/auth'
 
 export default function SplashScreen() {
   const { user, ready } = useAuth()
-  const navigate = useNavigate()
+  const history = useHistory()
 
   useEffect(() => {
     if (!ready) return
-    let cancelled = false
-    // Czekamy, aż <ion-router-outlet> faktycznie się zdefiniuje (Stencil
-    // podłącza go asynchronicznie) — redirect wystrzelony wcześniej potrafi
-    // trwale rozjechać outlet z historią reacta (nawigacja przestaje działać
-    // po zimnym starcie, mimo że history.length rośnie).
-    customElements.whenDefined('ion-router-outlet').then(() => {
-      if (cancelled) return
-      // replace, nie push — splash znika z historii (jak replace w RN)
-      navigate(user ? '/catalog' : '/login', { replace: true })
-    })
-    return () => { cancelled = true }
-  }, [ready, user, navigate])
+    // replace, nie push — splash znika z historii (jak replace w RN)
+    history.replace(user ? '/catalog' : '/login')
+  }, [ready, user, history])
 
   return (
     <IonPage>

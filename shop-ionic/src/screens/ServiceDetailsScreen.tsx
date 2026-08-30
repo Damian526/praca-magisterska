@@ -3,7 +3,7 @@ import {
   IonContent, IonImg, IonButton, IonSpinner
 } from '@ionic/react'
 import { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useParams, useLocation, useHistory } from 'react-router-dom'
 import { apiService } from '../core/api'
 import { API_URL } from '../core/config'
 import { formatPrice } from '../core/format'
@@ -14,7 +14,7 @@ import type { Service } from '../core/types'
 export default function ServiceDetailScreen() {
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
-  const navigate = useNavigate()
+  const history = useHistory()
   const { add } = useCart()
   const [service, setService] = useState<Service | null>(null)
 
@@ -58,7 +58,7 @@ export default function ServiceDetailScreen() {
               {formatPrice(service.price)}
             </p>
             <p>{service.description}</p>
-            <IonButton expand="block" onClick={() => { add(service); navigate('/cart') }}>
+            <IonButton expand="block" onClick={() => { add(service); history.push('/cart') }}>
               Dodaj do koszyka
             </IonButton>
           </>

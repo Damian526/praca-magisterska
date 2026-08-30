@@ -5,7 +5,7 @@ import {
   type InfiniteScrollCustomEvent
 } from '@ionic/react'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { apiServices } from '../core/api'
 import { API_URL, PAGE_SIZE } from '../core/config'
 import { formatPrice } from '../core/format'
@@ -15,7 +15,7 @@ import type { Service } from '../core/types'
 import './Catalog.css'
 
 export default function CatalogScreen() {
-  const navigate = useNavigate()
+  const history = useHistory()
   const { count } = useCart()
   const [items, setItems] = useState<Service[]>([])
   const [page, setPage] = useState(1)
@@ -45,8 +45,8 @@ export default function CatalogScreen() {
 
   // ⭐ WSKAŹNIK 2 — znacznik z momentu kliknięcia w URL
   const openDetail = useCallback((id: string) => {
-    navigate(`/service/${id}?t=${now()}`)
-  }, [navigate])
+    history.push(`/service/${id}?t=${now()}`)
+  }, [history])
 
   // doładowanie kolejnej strony (odpowiednik onEndReached z FlatList)
   const loadMore = useCallback(async (e: InfiniteScrollCustomEvent) => {
@@ -59,9 +59,9 @@ export default function CatalogScreen() {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
-            <IonButton onClick={() => navigate('/search')}>Szukaj</IonButton>
-            <IonButton onClick={() => navigate('/orders')}>Historia</IonButton>
-            <IonButton onClick={() => navigate('/cart')}>Koszyk ({count})</IonButton>
+            <IonButton onClick={() => history.push('/search')}>Szukaj</IonButton>
+            <IonButton onClick={() => history.push('/orders')}>Historia</IonButton>
+            <IonButton onClick={() => history.push('/cart')}>Koszyk ({count})</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

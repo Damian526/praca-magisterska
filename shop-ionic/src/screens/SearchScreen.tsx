@@ -3,7 +3,7 @@ import {
   IonContent, IonSearchbar, IonChip, IonLabel, IonList, IonItem, IonSpinner
 } from '@ionic/react'
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { apiServices, apiCategories } from '../core/api'
 import { PAGE_SIZE, SEARCH_DEBOUNCE_MS } from '../core/config'
 import { formatPrice } from '../core/format'
@@ -12,7 +12,7 @@ import type { Service, Category } from '../core/types'
 import './Search.css'
 
 export default function SearchScreen() {
-  const navigate = useNavigate()
+  const history = useHistory()
   const [q, setQ] = useState('')
   const [cat, setCat] = useState<string | undefined>()
   const [cats, setCats] = useState<Category[]>([])
@@ -88,7 +88,7 @@ export default function SearchScreen() {
             <IonItem
               key={item.id}
               button
-              onClick={() => navigate(`/service/${item.id}?t=${now()}`)}
+              onClick={() => history.push(`/service/${item.id}?t=${now()}`)}
               className="row"
             >
               <IonLabel>

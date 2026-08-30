@@ -3,7 +3,7 @@ import {
   IonContent, IonInput, IonButton, IonText, IonSpinner
 } from '@ionic/react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useCart } from '../core/cart'
 import { useAuth } from '../core/auth'
 import { apiCreateOrder } from '../core/api'
@@ -11,7 +11,7 @@ import { formatPrice } from '../core/format'
 import { now, afterPaint, record } from '../core/measure'
 
 export default function CheckoutScreen() {
-  const navigate = useNavigate()
+  const history = useHistory()
   const { lines, total, clear } = useCart()
   const { user } = useAuth()
   const [name, setName] = useState(user?.fullName ?? '')
@@ -48,7 +48,7 @@ export default function CheckoutScreen() {
         // ── t3: ekran historii narysowany ──
         record('S3', 'render_ms', now() - t2, 'ms', { extra: { faza: 'render_po_odpowiedzi' } })
       })
-      navigate('/orders', { replace: true })
+      history.replace('/orders')
     } catch (e) {
       const message = e instanceof Error ? e.message : 'Nie udało się złożyć zamówienia'
       setError(message)
