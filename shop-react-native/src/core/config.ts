@@ -2,7 +2,7 @@
  *  Emulator Androida  → http://10.0.2.2:3000
  *  Fizyczny telefon   → http://<IP-komputera>:3000
  */
-export const API_URL = 'http://10.0.2.2:3000';
+export const API_URL = 'http://192.168.100.177:3000';
 
 export const ADMIN_TOKEN = 'token-do-endpointow-badawczych';
 
