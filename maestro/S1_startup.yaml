@@ -1,0 +1,12 @@
+appId: ${APP_ID}
+---
+- repeat:
+    times: 30
+    commands:
+      - stopApp
+      - launchApp
+      - assertVisible: "Katalog usług"
+      - waitForAnimationToEnd
+      - tapOn:
+          id: "btn-flush"
+      - assertVisible: "Wysłano"

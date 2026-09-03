@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+---
+- launchApp
+- assertVisible: "Katalog usług"
+- repeat:
+    times: 30
+    commands:
+      - scrollUntilVisible:
+          element:
+            id: "service-item-25"
+          direction: DOWN
+      - tapOn:
+          id: "service-item-5"
+      - assertVisible: "Dodaj do koszyka"
+      - tapOn:
+          id: "btn-add-to-cart"
+      - assertVisible: "Przejdź do zamówienia"
+      - tapOn:
+          id: "btn-checkout"
+      - assertVisible: "Złóż zamówienie"
+      - tapOn:
+          id: "btn-submit-order"
+      - assertVisible: "Historia zamówień"
+      - back
+      - assertVisible: "Katalog usług"
+- tapOn:
+    id: "btn-flush"
+- assertVisible: "Wysłano"
