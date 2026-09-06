@@ -10,7 +10,7 @@ appId: ${APP_ID}
             id: "service-item-25"
           direction: DOWN
       - tapOn:
-          id: "service-item-5"
+          id: "service-item-25"
       - assertVisible: "Dodaj do koszyka"
       - tapOn:
           id: "btn-add-to-cart"
@@ -21,6 +21,10 @@ appId: ${APP_ID}
       - tapOn:
           id: "btn-submit-order"
       - assertVisible: "Historia zamówień"
+      - back
+      - assertVisible: "Koszyk jest pusty"
+      - back
+      - assertVisible: "Dodaj do koszyka"
       - back
       - assertVisible: "Katalog usług"
 - tapOn:

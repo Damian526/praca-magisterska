@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '../navigation/types'
 import { useCart } from '../core/cart'
@@ -12,7 +13,7 @@ export default function CartScreen({ navigation }: Props) {
   const { lines, setQty, remove, total } = useCart()
 
   return (
-    <View style={s.wrap}>
+    <SafeAreaView style={s.wrap} edges={['bottom']}>
       <FlatList
         data={lines}
         keyExtractor={l => l.service.id}
@@ -48,7 +49,7 @@ export default function CartScreen({ navigation }: Props) {
           <Text style={s.btnTxt}>Przejdź do zamówienia</Text>
         </Pressable>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

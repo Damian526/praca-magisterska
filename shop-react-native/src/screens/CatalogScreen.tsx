@@ -39,7 +39,7 @@ export default function CatalogScreen({ navigation }: Props) {
         startupRecorded.current = true
         afterPaint(() => {
           const startupMs = now() - (globalThis as any).__APP_START__
-          record('S1', 'startup_ms', startupMs, 'ms', {
+          record('startup_ms', startupMs, 'ms', {
             serverMs: serverMs ?? undefined,
             extra: { listSize: PAGE_SIZE }
           })
