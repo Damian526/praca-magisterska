@@ -1,5 +1,6 @@
 import fp from "fastify-plugin";
-import { PrismaClient } from "@prisma/client";
+// Typy z generowanego klienta — "@prisma/client" ma w v7 nieaktualne.
+import { PrismaClient } from "../generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 declare module "fastify" {

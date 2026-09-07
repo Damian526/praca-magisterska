@@ -1,4 +1,8 @@
-import type { PrismaClient, Service, Category } from "@prisma/client";
+import type {
+  PrismaClient,
+  Service,
+  Category,
+} from "../../generated/prisma/client.js";
 import type { ServiceListQuery } from "./catalog.schemas.js";
 
 type ServiceWithCategory = Service & { category: Category };

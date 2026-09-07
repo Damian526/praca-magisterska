@@ -1,4 +1,4 @@
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "../../generated/prisma/client.js";
 import bcrypt from "bcryptjs";
 import { Conflict, Unauthorized } from "../../lib/errors.js";
 
