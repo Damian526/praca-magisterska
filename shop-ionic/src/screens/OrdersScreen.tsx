@@ -17,11 +17,15 @@ export default function OrdersScreen() {
       const t0 = now()
       try {
         const { data, serverMs } = await apiOrders(1, 20)
+        const tData = now()
         setOrders(data.data)
         afterPaint(() => {
-          record('S3', 'render_ms', now() - t0, 'ms', {
+          record('render_orders_ms', now() - tData, 'ms', {
             serverMs: serverMs ?? undefined,
-            extra: { ekran: 'historia', count: data.data.length }
+            extra: {
+              count: data.data.length,
+              apiMs: Math.round((tData - t0) * 1000) / 1000
+            }
           })
         })
       } finally { setLoading(false) }

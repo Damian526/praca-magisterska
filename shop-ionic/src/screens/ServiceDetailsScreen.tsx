@@ -23,15 +23,23 @@ export default function ServiceDetailScreen() {
 
   useEffect(() => {
     (async () => {
+      const tRequest = now()
       const { data, serverMs } = await apiService(id!)
+      const tData = now()
       setService(data)
 
-      // ⭐ WSKAŹNIK 2 — od kliknięcia do gotowego ekranu
+      // ⭐ WSKAŹNIK 2 — kliknięcie -> gotowy ekran. Z czasem sieci w środku;
+      //    rozbicie idzie do `extra`.
       if (measureStart !== undefined) {
         afterPaint(() => {
-          record('S2', 'ui_response_ms', now() - measureStart, 'ms', {
+          const tPainted = now()
+          record('ui_response_ms', tPainted - measureStart, 'ms', {
             serverMs: serverMs ?? undefined,
-            extra: { serviceId: id }
+            extra: {
+              serviceId: id,
+              apiMs: Math.round((tData - tRequest) * 1000) / 1000,
+              renderMs: Math.round((tPainted - tData) * 1000) / 1000
+            }
           })
         })
       }

@@ -30,11 +30,17 @@ export default function SearchScreen() {
       setLoading(true)
       try {
         const { data, serverMs } = await apiServices({ q: q || undefined, category: cat, limit: PAGE_SIZE })
+        const tData = now()
         setItems(data.data)
         afterPaint(() => {
-          record('S3', 'render_ms', now() - t0, 'ms', {
+          record('render_search_ms', now() - tData, 'ms', {
             serverMs: serverMs ?? undefined,
-            extra: { query: q, category: cat ?? null, resultCount: data.data.length }
+            extra: {
+              query: q,
+              category: cat ?? null,
+              resultCount: data.data.length,
+              apiMs: Math.round((tData - t0) * 1000) / 1000
+            }
           })
         })
       } finally { setLoading(false) }

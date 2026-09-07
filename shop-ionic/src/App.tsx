@@ -4,6 +4,8 @@ import { Route, Redirect } from 'react-router-dom'
 
 import { AuthProvider } from './core/auth'
 import { CartProvider } from './core/cart'
+import { configureDevice } from './core/measure'
+import { getDeviceInfo } from './platform/device'
 
 import SplashScreen        from './screens/SplashScreen'
 import LoginScreen         from './screens/LoginScreen'
@@ -22,6 +24,12 @@ import '@ionic/react/css/typography.css'
 import './theme/variables.css'
 
 setupIonicReact()
+
+// Odczyt jest asynchroniczny, ale kończy się długo przed pierwszym flush().
+// Błąd musi być głośny: po cichu wróciłby 'nieznane' i asymetria metadanych.
+getDeviceInfo()
+  .then(configureDevice)
+  .catch(e => console.error('[POMIAR] nie udało się odczytać modelu urządzenia', e))
 
 export default function App() {
   return (

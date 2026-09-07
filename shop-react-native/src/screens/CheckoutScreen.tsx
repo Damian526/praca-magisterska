@@ -37,16 +37,16 @@ export default function CheckoutScreen({ navigation }: Props) {
       // ── t2: odpowiedź odebrana ──
       const t2 = now()
 
-      record('S3', 'ui_response_ms', t1 - t0, 'ms', { extra: { faza: 'przygotowanie' } })
-      record('S3', 'api_request_ms', t2 - t1, 'ms', {
+      record('request_build_ms', t1 - t0)
+      record('api_request_ms', t2 - t1, 'ms', {
         serverMs: serverMs ?? undefined,
-        extra: { faza: 'siec_plus_serwer', totalMs }
+        extra: { totalMs }
       })
 
       clear()
       afterPaint(() => {
-        // ── t3: ekran historii narysowany ──
-        record('S3', 'render_ms', now() - t2, 'ms', { extra: { faza: 'render_po_odpowiedzi' } })
+        // ── t3: przerysowany ekran (t2 = odpowiedź, więc sam render) ──
+        record('render_checkout_ms', now() - t2)
       })
       navigation.replace('Orders')
     } catch (e: any) {

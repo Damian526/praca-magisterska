@@ -28,11 +28,16 @@ enum Scenario {
   S3
 }
 
+/// Każda wartość = jedno miejsce pomiaru w kodzie aplikacji (patrz MetricName
+/// w src/core/measure.ts po stronie obu aplikacji).
 enum MetricType {
   STARTUP_MS
   UI_RESPONSE_MS
   API_REQUEST_MS
-  RENDER_MS
+  REQUEST_BUILD_MS
+  RENDER_CHECKOUT_MS
+  RENDER_ORDERS_MS
+  RENDER_SEARCH_MS
   RAM_MB
   CPU_PERCENT
 }
@@ -112,23 +117,26 @@ model OrderItem {
 
 /// Tabela wyników pomiarów — serce infrastruktury badawczej
 model Measurement {
-  id          Int        @id @default(autoincrement())
-  runId       String     @db.VarChar(64)   // identyfikator serii pomiarowej
-  platform    Platform                     // enum: REACT_NATIVE | IONIC
-  scenario    Scenario                     // enum: S1 | S2 | S3
-  metric      MetricType                   // enum: STARTUP_MS | ...
-  iteration   Int                          // numer powtórzenia 1..30
-  value       Float                        // zmierzona wartość
-  unit        String     @db.VarChar(8)    // "ms" | "MB" | "%"
-  deviceModel String?    @db.VarChar(80)
-  osVersion   String?    @db.VarChar(40)
-  buildType   BuildType?                   // MUSI być RELEASE
-  appVersion  String?    @db.VarChar(20)
-  serverMs    Float?                       // czas serwera z nagłówka Server-Timing
-  extra       Json?                        // JSONB — można odpytywać w SQL
-  recordedAt  DateTime   @db.Timestamptz(3)  // czas na urządzeniu
-  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  id           Int        @id @default(autoincrement())
+  sessionId    String     @db.VarChar(32)
+  runId        String     @db.VarChar(64) // <sessionId>_<scenario>
+  platform     Platform
+  scenario     Scenario
+  metric       MetricType
+  iteration    Int
+  value        Float
+  unit         String     @db.VarChar(8) // "ms" | "MB" | "%"
+  deviceModel  String?    @db.VarChar(80)
+  osVersion    String?    @db.VarChar(40)
+  buildType    BuildType? // MUSI być RELEASE
+  appVersion   String?    @db.VarChar(20)
+  serverMs     Float? // z nagłówka Server-Timing
+  extra        Json? // JSONB — można odpytywać w SQL
+  /// Epoch ms z urządzenia. Zamiast timestamptz, bo sterownik zapisywał tam
+  /// moment przesunięty o offset strefy. Tego używaj do łączenia z RAM/CPU.
+  recordedAtMs BigInt
+  createdAt    DateTime   @default(now()) @db.Timestamptz(3)
 
-  @@index([runId, platform, scenario, metric])
+  @@index([sessionId, platform, scenario, metric])
   @@map("measurements")
 }

@@ -1,5 +1,5 @@
 import {
-  IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonContent,
+  IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonContent,
   IonList, IonItem, IonThumbnail, IonLabel, IonImg,
   IonInfiniteScroll, IonInfiniteScrollContent,
   type InfiniteScrollCustomEvent
@@ -34,7 +34,7 @@ export default function CatalogScreen() {
       startupRecorded.current = true
       afterPaint(() => {
         const startupMs = now() - globalThis.__APP_START__
-        record('S1', 'startup_ms', startupMs, 'ms', {
+        record('startup_ms', startupMs, 'ms', {
           serverMs: serverMs ?? undefined,
           extra: { listSize: PAGE_SIZE }
         })
@@ -59,6 +59,7 @@ export default function CatalogScreen() {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonTitle>Katalog usług</IonTitle>
           <IonButtons slot="end">
             <IonButton id="btn-flush" onClick={async () => { await flush(); setSent(true) }}>
               {sent ? 'Wysłano' : `⏱ ${pendingCount()}`}

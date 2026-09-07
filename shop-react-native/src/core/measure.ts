@@ -1,4 +1,11 @@
-import { API_URL, ADMIN_TOKEN, APP_VERSION } from './config';
+import {
+  API_URL,
+  ADMIN_TOKEN,
+  APP_VERSION,
+  SESSION_ID,
+  SCENARIO,
+  RUN_ID,
+} from './config';
 import { PLATFORM } from '../platform/identity';
 
 export function now(): number {
@@ -16,76 +23,67 @@ export function afterPaint(cb: () => void): void {
 
 export type MetricName =
   | 'startup_ms'
+  /** Dotknięcie -> narysowany ekran detalu. Obejmuje sieć, bo to opóźnienie
+   *  odczuwane przez użytkownika; rozbicie w extra.apiMs / extra.renderMs. */
   | 'ui_response_ms'
   | 'api_request_ms'
-  | 'render_ms'
+  | 'request_build_ms'
+  | 'render_checkout_ms'
+  | 'render_orders_ms'
+  | 'render_search_ms'
   | 'ram_mb'
   | 'cpu_percent';
 
-export type Scenario = 'S1' | 'S2' | 'S3';
-
 type Sample = {
-  scenario: Scenario;
   metric: MetricName;
-  iteration: number;
   value: number;
   unit: 'ms' | 'MB' | '%';
   serverMs?: number;
-  recordedAt: string;
+  /** Epoch ms — bezstrefowy, więc żadna warstwa zapisu go nie przesunie. */
+  recordedAtMs: number;
   extra?: Record<string, unknown>;
 };
 
 const buffer: Sample[] = [];
 
-let runId = 'run_dev';
-let iteration = 1;
 let deviceModel = 'nieznane';
 let osVersion = 'nieznane';
 
-export function configureRun(opts: {
-  runId: string;
-  iteration?: number;
+export function configureDevice(opts: {
   deviceModel?: string;
   osVersion?: string;
 }) {
-  runId = opts.runId;
-  if (opts.iteration !== undefined) iteration = opts.iteration;
   if (opts.deviceModel) deviceModel = opts.deviceModel;
   if (opts.osVersion) osVersion = opts.osVersion;
 }
 
-export function nextIteration() {
-  iteration += 1;
-}
-
-/**
- * ⚠️⚠️ TYLKO zapis do pamięci. ŻADNEJ SIECI.
- */
+/** ⚠️⚠️ TYLKO zapis do pamięci. ŻADNEJ SIECI. */
 export function record(
-  scenario: Scenario,
   metric: MetricName,
   value: number,
   unit: 'ms' | 'MB' | '%' = 'ms',
   opts?: { serverMs?: number; extra?: Record<string, unknown> },
 ): void {
   buffer.push({
-    scenario,
     metric,
-    iteration,
     value: Math.round(value * 1000) / 1000,
     unit,
     serverMs: opts?.serverMs,
     extra: opts?.extra,
-    recordedAt: new Date().toISOString(),
+    recordedAtMs: Date.now(),
   });
-  if (__DEV__) console.log(`[POMIAR] ${metric} = ${value.toFixed(2)} ${unit}`);
+  if (__DEV__) {
+    console.log(`[POMIAR ${SCENARIO}] ${metric} = ${value.toFixed(2)} ${unit}`);
+  }
 }
 
 /** Wywołuj DOPIERO po zakończeniu całego scenariusza. */
 export async function flush(): Promise<number> {
   if (buffer.length === 0) return 0;
   const payload = {
-    runId,
+    sessionId: SESSION_ID,
+    runId: RUN_ID,
+    scenario: SCENARIO,
     platform: PLATFORM,
     deviceModel,
     osVersion,
