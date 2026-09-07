@@ -17,8 +17,9 @@ services:
       POSTGRES_DB: services_shop
       # Wyłącza sprawdzanie lokalizacji przy inicjalizacji — szybszy start
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
-      TZ: Europe/Warsaw
-      PGTZ: Europe/Warsaw
+      # UTC, nie Europe/Warsaw — strefa brała udział w przesuwaniu znaczników.
+      TZ: UTC
+      PGTZ: UTC
 
     ports:
       - "5432:5432"
