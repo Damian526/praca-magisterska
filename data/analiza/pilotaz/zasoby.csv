@@ -1,0 +1,3 @@
+scenariusz,metryka,jednostka,n_rn,n_ionic,rn_mediana,rn_q1,rn_q3,rn_p95,ionic_mediana,ionic_q1,ionic_q3,ionic_p95,shapiro_p_rn,shapiro_p_ionic,mannwhitney_p,efekt_r,efekt_opis,lepsza
+S3,CPU_PERCENT,MB / %,1561,1555,16.6,10.0,40.0,90.0,13.3,6.6,40.0,110.0,0.0,0.0,0.0,0.14,mała,Ionic
+S3,RAM_PSS_MB,MB / %,1561,1555,220.72,213.94,222.76,224.97,189.11,178.86,196.44,207.73,0.0,0.0,0.0,0.933,duża,Ionic
