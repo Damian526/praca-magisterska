@@ -2,7 +2,6 @@ import { API_URL, PAGE_SIZE } from './config'
 import { now } from './measure'
 import type { Category, Service, Order, User, Paginated } from './types'
 
-// ─── token ustawiany przez auth.tsx ───
 let authToken: string | null = null
 export function setAuthToken(t: string | null) { authToken = t }
 
@@ -13,21 +12,15 @@ export class ApiError extends Error {
   }
 }
 
-/** Każde wywołanie zwraca dane + rozbicie czasu */
 export type ApiResult<T> = {
   data: T
-  /** czas backendu z nagłówka Server-Timing (ms) */
   serverMs: number | null
-  /** pełny czas żądania mierzony w aplikacji (ms) */
   totalMs: number
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<ApiResult<T>> {
   const headers: Record<string, string> = {}
 
-  // ⚠️ Content-Type ustawiamy TYLKO gdy jest ciało żądania.
-  // Przy GET dodatkowy nagłówek wymusiłby w Ionicu preflight OPTIONS,
-  // którego React Native nie wykonuje — powstałaby asymetria pomiaru.
   if (init.body) headers['Content-Type'] = 'application/json'
   if (authToken) headers.Authorization = `Bearer ${authToken}`
 
@@ -47,8 +40,6 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<ApiResu
   return { data: (await res.json()) as T, serverMs, totalMs }
 }
 
-/* ─────────── Uwierzytelnianie ─────────── */
-
 export const apiRegister = (b: { email: string; password: string; fullName: string }) =>
   request<{ token: string; user: User }>('/api/auth/register', {
     method: 'POST', body: JSON.stringify(b)
@@ -60,8 +51,6 @@ export const apiLogin = (b: { email: string; password: string }) =>
   })
 
 export const apiMe = () => request<User>('/api/auth/me')
-
-/* ─────────── Katalog ─────────── */
 
 export const apiCategories = () => request<Category[]>('/api/categories')
 
@@ -77,8 +66,6 @@ export function apiServices(opts: {
 }
 
 export const apiService = (id: string) => request<Service>(`/api/services/${id}`)
-
-/* ─────────── Zamówienia ─────────── */
 
 export const apiCreateOrder = (b: {
   items: Array<{ serviceId: string; quantity: number }>

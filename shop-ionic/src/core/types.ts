@@ -45,7 +45,6 @@ export type Paginated<T> = {
   meta: { page: number; limit: number; total: number; totalPages: number };
 };
 
-/** Pozycja koszyka — koszyk żyje wyłącznie w pamięci aplikacji */
 export type CartLine = {
   service: Service;
   quantity: number;

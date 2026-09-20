@@ -17,14 +17,8 @@ export function afterPaint(cb: () => void): void {
   requestAnimationFrame(() => requestAnimationFrame(cb));
 }
 
-// ─────────────────────────────────────────────────────────
-//  BUFOR POMIARÓW
-// ─────────────────────────────────────────────────────────
-
 export type MetricName =
   | 'startup_ms'
-  /** Dotknięcie -> narysowany ekran detalu. Obejmuje sieć, bo to opóźnienie
-   *  odczuwane przez użytkownika; rozbicie w extra.apiMs / extra.renderMs. */
   | 'ui_response_ms'
   | 'api_request_ms'
   | 'request_build_ms'
@@ -39,7 +33,6 @@ type Sample = {
   value: number;
   unit: 'ms' | 'MB' | '%';
   serverMs?: number;
-  /** Epoch ms — bezstrefowy, więc żadna warstwa zapisu go nie przesunie. */
   recordedAtMs: number;
   extra?: Record<string, unknown>;
 };
@@ -57,7 +50,6 @@ export function configureDevice(opts: {
   if (opts.osVersion) osVersion = opts.osVersion;
 }
 
-/** ⚠️⚠️ TYLKO zapis do pamięci. ŻADNEJ SIECI. */
 export function record(
   metric: MetricName,
   value: number,
@@ -77,7 +69,6 @@ export function record(
   }
 }
 
-/** Wywołuj DOPIERO po zakończeniu całego scenariusza. */
 export async function flush(): Promise<number> {
   if (buffer.length === 0) return 0;
   const payload = {

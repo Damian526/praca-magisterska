@@ -12,8 +12,6 @@ export async function createOrder(
   userId: string,
   input: CreateOrderInput,
 ) {
-  // 1. Pobierz aktualne ceny Z BAZY, nie od klienta.
-  //    Nigdy nie ufaj cenie przysłanej przez aplikację.
   const ids = input.items.map((i) => i.serviceId);
   const services = await prisma.service.findMany({
     where: { id: { in: ids } },
@@ -29,7 +27,6 @@ export async function createOrder(
     0,
   );
 
-  // 2. Jedna transakcja: zamówienie + pozycje
   const order = await prisma.order.create({
     data: {
       userId,
@@ -79,7 +76,7 @@ export async function getOrder(
   id: string,
 ) {
   const order = await prisma.order.findFirst({
-    where: { id, userId }, // ← userId w warunku = użytkownik widzi tylko swoje
+    where: { id, userId },
     include: { items: { include: { service: true } } },
   });
   if (!order) throw NotFound("Zamówienie");

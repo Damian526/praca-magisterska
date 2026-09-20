@@ -7,7 +7,6 @@ import type { ServiceListQuery } from "./catalog.schemas.js";
 
 type ServiceWithCategory = Service & { category: Category };
 
-/** Mapowanie encji bazodanowej na obiekt API */
 function toDto(s: ServiceWithCategory) {
   return {
     id: s.id,
@@ -35,8 +34,6 @@ export async function listServices(prisma: PrismaClient, q: ServiceListQuery) {
     ...(q.q ? { name: { contains: q.q } } : {}),
   };
 
-  // Dwa zapytania równolegle: dane + licznik.
-  // $transaction gwarantuje, że oba widzą ten sam stan bazy.
   const [items, total] = await prisma.$transaction([
     prisma.service.findMany({
       where,

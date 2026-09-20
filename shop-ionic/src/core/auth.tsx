@@ -8,7 +8,7 @@ const USER_KEY  = 'auth_user'
 
 type AuthCtx = {
   user: User | null
-  ready: boolean            // czy odczyt z pamięci się zakończył
+  ready: boolean
   login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string, fullName: string) => Promise<void>
   logout: () => Promise<void>
@@ -25,8 +25,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [ready, setReady] = useState(false)
 
-  // Odtworzenie sesji przy starcie — dzięki temu pomiar zimnego startu
-  // nie zawiera logowania (bcrypt trwa ~100 ms i zaburzyłby wynik).
   useEffect(() => {
     (async () => {
       try {

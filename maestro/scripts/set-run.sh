@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# użycie: ./set-run.sh <sessionId> <S1|S2|S3>
-# Ustawia SESSION_ID i SCENARIO w OBU aplikacjach naraz.
+# Użycie: ./set-run.sh <sessionId> <S1|S2|S3>
 set -e
 
 SESSION=$1

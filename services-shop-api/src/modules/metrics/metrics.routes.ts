@@ -3,8 +3,6 @@ import { Type } from "@sinclair/typebox";
 import { Prisma } from "../../generated/prisma/client.js";
 import { MetricsBatchBody } from "./metrics.schema.js";
 
-/* Kontrakt API używa czytelnych nazw ('react-native'), baza — enumów
-   PostgreSQL (REACT_NATIVE). Mapujemy w jednym miejscu. */
 const PLATFORM = {
   "react-native": "REACT_NATIVE",
   ionic: "IONIC",
@@ -24,7 +22,6 @@ const METRIC = {
   cpu_percent: "CPU_PERCENT",
 } as const;
 
-/** Filtr wspólny dla /summary i /export.csv */
 const SeriesFilter = Type.Object({
   sessionId: Type.Optional(Type.String()),
   runId: Type.Optional(Type.String()),
@@ -38,12 +35,8 @@ const whereSeries = (q: SeriesQuery) => ({
 });
 
 export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
-  // Wszystkie trasy w tym module wymagają tokenu administracyjnego.
-  // To działa dzięki enkapsulacji (rozdz. 0.2) — hook obowiązuje
-  // tylko wewnątrz tego pluginu.
   app.addHook("onRequest", app.requireAdminToken);
 
-  /* ---- Zapis paczki pomiarów ---- */
   app.post(
     "/batch",
     {
@@ -64,8 +57,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
     async (request, reply) => {
       const b = request.body;
 
-      // Iteracje numerujemy licząc wiersze już zapisane w tej serii. runId jest
-      // stały przez całą serię, więc numeracja przeżywa restarty aplikacji w S1.
       const counts = new Map<string, number>();
       for (const m of b.measurements) {
         const key = METRIC[m.metric];
@@ -124,7 +115,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- Statystyki opisowe ---- */
   app.get(
     "/summary",
     {
@@ -135,7 +125,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
         where: whereSeries(request.query),
       });
 
-      // grupowanie: sesja | platforma | scenariusz | metryka
       const groups = new Map<string, number[]>();
       for (const r of rows) {
         const key = `${r.sessionId}|${r.platform}|${r.scenario}|${r.metric}`;
@@ -181,7 +170,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- Eksport CSV ---- */
   app.get(
     "/export.csv",
     {
@@ -232,7 +220,7 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
           r.value,
           r.unit,
           r.serverMs ?? "",
-          r.recordedAtMs.toString(), // BigInt nie serializuje się sam
+          r.recordedAtMs.toString(),
           new Date(Number(r.recordedAtMs)).toISOString(),
         ].join(","),
       );
@@ -245,7 +233,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- Usunięcie nieudanej serii ---- */
   app.delete(
     "/run/:runId",
     {
@@ -263,7 +250,6 @@ export const metricsRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- Usunięcie całej sesji ---- */
   app.delete(
     "/session/:sessionId",
     {

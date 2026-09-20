@@ -1,5 +1,4 @@
 :root {
-  /* kolory — te same wartości co COLORS w theme.ts */
   --app-bg:        #F5F6F8;
   --app-surface:   #FFFFFF;
   --app-text:      #1A1D21;
@@ -9,13 +8,10 @@
   --app-danger:    #DC2626;
   --app-success:   #059669;
 
-  /* odstępy — SPACING */
   --sp-xs: 4px;  --sp-sm: 8px;  --sp-md: 12px;  --sp-lg: 16px;  --sp-xl: 24px;
 
-  /* czcionki — FONT */
   --fs-sm: 13px; --fs-base: 15px; --fs-lg: 17px; --fs-xl: 22px;
 
-  /* ⚠️ KRYTYCZNE: ta sama wysokość wiersza co LIST_ITEM_HEIGHT w RN */
   --list-item-height: 96px;
   --thumb-size: 72px;
 }

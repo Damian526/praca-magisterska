@@ -22,19 +22,16 @@ export default function CheckoutScreen({ navigation }: Props) {
   async function submit() {
     setBusy(true); setError(null)
 
-    // ── t0: dotknięcie przycisku ──
     const t0 = now()
     const body = {
       items: lines.map(l => ({ serviceId: l.service.id, quantity: l.quantity })),
       customerName: name,
       customerEmail: email
     }
-    // ── t1: żądanie gotowe do wysłania (koszt walidacji + serializacji) ──
     const t1 = now()
 
     try {
       const { serverMs, totalMs } = await apiCreateOrder(body)
-      // ── t2: odpowiedź odebrana ──
       const t2 = now()
 
       record('request_build_ms', t1 - t0)
@@ -45,7 +42,6 @@ export default function CheckoutScreen({ navigation }: Props) {
 
       clear()
       afterPaint(() => {
-        // ── t3: przerysowany ekran (t2 = odpowiedź, więc sam render) ──
         record('render_checkout_ms', now() - t2)
       })
       navigation.replace('Orders')

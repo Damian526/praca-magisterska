@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Liczy wszystkie tabele do rozdziału 3 — czasy i zasoby, z jednego miejsca.
 
-    .venv/bin/python analiza/analiza.py                    # wszystkie sesje
+    .venv/bin/python analiza/analiza.py
     .venv/bin/python analiza/analiza.py --sesje ses_02 ses_03
-    .venv/bin/python analiza/analiza.py --bez-odstajacych  # z odrzuceniem odstających
+    .venv/bin/python analiza/analiza.py --bez-odstajacych
 
 Wyniki lądują w data/analiza/*.csv (do wklejenia) i na ekranie (do przejrzenia).
 """
@@ -24,8 +24,6 @@ except ImportError:
 KATALOG = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WYJSCIE = os.path.join(KATALOG, "data", "analiza")
 
-# Sampler zasobów dostaje nazwę platformy z linii poleceń, więc w plikach
-# pilotażowych jest "react-native", a w nowych "REACT_NATIVE". Sprowadzamy do jednego.
 PLATFORMY = {
     "react_native": "REACT_NATIVE", "react-native": "REACT_NATIVE",
     "reactnative": "REACT_NATIVE", "rn": "REACT_NATIVE",
@@ -33,8 +31,6 @@ PLATFORMY = {
 }
 RN, IONIC = "REACT_NATIVE", "IONIC"
 
-# Metryki, gdzie wyższa wartość = gorzej (wszystkie czasy i zasoby).
-# Trzymane jawnie, żeby kolumna "lepsza" nie zgadywała.
 NIZEJ_LEPIEJ = True
 
 
@@ -42,9 +38,6 @@ def norm_platforma(s):
     return PLATFORMY.get(s.strip().lower().replace(" ", ""), s.strip().upper())
 
 
-# ──────────────────────────────────────────────────────────────
-#  Wczytywanie
-# ──────────────────────────────────────────────────────────────
 def wczytaj_czasy(sesje=None):
     """data/metrics/metrics_ses_*.csv → [(sesja, scenariusz, metryka, platforma, iteracja, wartość)]"""
     wiersze = []
@@ -87,8 +80,6 @@ def wczytaj_zasoby(z_pilotazem=False, sesje=None):
                         continue
                 m = re.search(r"[Ss]([123])\b|_[Ss]([123])$|_[Ss]([123])_", run_id)
                 scenariusz = "S" + next(g for g in (m.groups() if m else []) if g) if m else "?"
-                # Skrypt zapisuje "0" gdy nie znalazł procesu w `top`, a "0.0" gdy
-                # top zwrócił realne zero. Pierwsze to brak odczytu, nie pomiar.
                 cpu_surowy = r["cpu_percent"].strip()
                 wiersze.append({
                     "scenariusz": scenariusz,
@@ -100,9 +91,6 @@ def wczytaj_zasoby(z_pilotazem=False, sesje=None):
     return wiersze
 
 
-# ──────────────────────────────────────────────────────────────
-#  Statystyka
-# ──────────────────────────────────────────────────────────────
 def odstajace(x):
     """Indeksy odstających metodą MAD (odporna na to, że sama odstająca psuje odchylenie).
 
@@ -116,9 +104,7 @@ def odstajace(x):
     med = np.median(x)
     mad = np.median(np.abs(x - med))
     if mad == 0 or med < 1.0:
-        return np.zeros(len(x), dtype=bool)  # metryki stale zerowe (REQUEST_BUILD_MS)
-    # Jednostronnie, tylko w górę: zakłócenie (GC, proces w tle, throttling) wydłuża
-    # pomiar. Pomiar szybszy od mediany to nie artefakt i nie ma podstaw go wykluczać.
+        return np.zeros(len(x), dtype=bool)
     odchylenie = x - med
     return (odchylenie > 3 * 1.4826 * mad) & (odchylenie > 0.25 * med)
 
@@ -139,19 +125,17 @@ def porownaj(a, b):
     """a = React Native, b = Ionic. Zwraca p Shapiro, p Manna-Whitneya i siłę efektu."""
     wynik = {"shapiro_rn": None, "shapiro_ionic": None, "p": None, "efekt": None, "efekt_opis": "—"}
     if len(a) < 3 or len(b) < 3:
-        return wynik  # STARTUP_MS w S2/S3 to pojedynczy checkpoint — testu nie ma z czego zrobić
+        return wynik
 
     for klucz, probka in (("shapiro_rn", a), ("shapiro_ionic", b)):
         if 3 <= len(probka) <= 5000 and len(set(probka)) > 1:
             wynik[klucz] = float(stats.shapiro(probka).pvalue)
 
     if len(set(a)) == 1 and len(set(b)) == 1 and set(a) == set(b):
-        return wynik  # REQUEST_BUILD_MS bywa stałym zerem po obu stronach
+        return wynik
 
     u, p = stats.mannwhitneyu(a, b, alternative="two-sided")
     wynik["p"] = float(p)
-    # Korelacja rangowo-biserialna: -1..1, dodatnia = RN ma wyższe wartości.
-    # Bez niej przy n=60 każda różnica wyjdzie "istotna" i nie wiadomo, czy jest duża.
     r = 2 * u / (len(a) * len(b)) - 1
     wynik["efekt"] = float(r)
     wynik["efekt_opis"] = (

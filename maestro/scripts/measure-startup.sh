@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-# użycie: ./measure-startup.sh <package> <platforma> [powtórzeń]
-#
-# Pomiar startu liczony przez Androida (`am start -W`) — kontrola dla STARTUP_MS.
+# Użycie: ./measure-startup.sh <package> <platforma> [powtórzeń]
 set -euo pipefail
 
 PKG=${1:-}
@@ -37,7 +35,6 @@ for i in $(seq 1 "$N"); do
   TH=$(echo "$R" | grep "^ThisTime:" | awk '{print $2}')
   WT=$(echo "$R" | grep "^WaitTime:" | awk '{print $2}')
 
-  # Pusty odczyt = pomiar się nie odbył. Lepiej przerwać niż dopisać dziurę.
   if [ -z "$TT" ]; then
     echo "❌ Iteracja $i nie zwróciła czasu startu. Odpowiedź adb:"
     echo "$R" | sed 's/^/    /'

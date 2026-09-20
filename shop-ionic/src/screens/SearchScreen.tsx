@@ -22,7 +22,6 @@ export default function SearchScreen() {
 
   useEffect(() => { apiCategories().then(r => setCats(r.data)) }, [])
 
-  // debounce — ta sama wartość SEARCH_DEBOUNCE_MS co w RN
   useEffect(() => {
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(async () => {
@@ -66,7 +65,6 @@ export default function SearchScreen() {
           debounce={0}
         />
 
-        {/* poziomy pasek kategorii — chipy */}
         <div className="chips">
           <IonChip
             outline={cat !== undefined}

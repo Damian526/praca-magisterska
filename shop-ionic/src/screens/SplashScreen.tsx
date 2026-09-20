@@ -9,7 +9,6 @@ export default function SplashScreen() {
 
   useEffect(() => {
     if (!ready) return
-    // replace, nie push — splash znika z historii (jak replace w RN)
     history.replace(user ? '/catalog' : '/login')
   }, [ready, user, history])
 

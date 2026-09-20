@@ -9,12 +9,8 @@ import {
 import { createOrder, listOrders, getOrder } from "./orders.service.js";
 
 export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
-  // ⭐ Hook na poziomie CAŁEGO modułu.
-  // tego pluginu — moduł katalogu pozostaje publiczny.
-  // Nie trzeba powtarzać `onRequest` przy każdej trasie osobno.
   app.addHook("onRequest", app.authenticate);
 
-  /* ---- POST /api/orders ---- */
   app.post(
     "/",
     {
@@ -29,7 +25,7 @@ export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
     async (request, reply) => {
       const order = await createOrder(
         app.prisma,
-        request.user.sub, // userId z tokenu JWT, NIE z ciała żądania
+        request.user.sub,
         request.body,
       );
       reply.code(201);
@@ -37,7 +33,6 @@ export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- GET /api/orders ---- */
   app.get(
     "/",
     {
@@ -59,7 +54,6 @@ export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
     },
   );
 
-  /* ---- GET /api/orders/:id ---- */
   app.get(
     "/:id",
     {
@@ -72,7 +66,6 @@ export const ordersRoutes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request) => {
-      // getOrder rzuci NotFound, jeśli zamówienie nie należy do użytkownika
       return getOrder(app.prisma, request.user.sub, request.params.id);
     },
   );

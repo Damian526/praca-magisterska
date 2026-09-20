@@ -32,7 +32,6 @@ export default function CartScreen() {
                   <h2>{l.service.name}</h2>
                   <p>{formatPrice(l.service.price)} × {l.quantity}</p>
                 </IonLabel>
-                {/* przyciski ilości — slot="end" ustawia je po prawej */}
                 <IonButton slot="end" fill="clear" onClick={() => setQty(l.service.id, l.quantity - 1)}>−</IonButton>
                 <IonText slot="end">{l.quantity}</IonText>
                 <IonButton slot="end" fill="clear" onClick={() => setQty(l.service.id, l.quantity + 1)}>+</IonButton>
@@ -43,7 +42,6 @@ export default function CartScreen() {
         )}
       </IonContent>
 
-      {/* stopka przyklejona na dole — odpowiednik footer z RN */}
       <IonFooter>
         <IonToolbar>
           <IonTitle>Razem: {formatPrice(total)}</IonTitle>

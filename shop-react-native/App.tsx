@@ -7,7 +7,6 @@ import RootNavigator from './src/navigation/RootNavigator'
 import { configureDevice } from './src/core/measure'
 import { getDeviceInfo } from './src/platform/device'
 
-// Sesja, scenariusz i runId pochodzą z config.ts — tu tylko metadane urządzenia.
 configureDevice(getDeviceInfo())
 
 export default function App() {

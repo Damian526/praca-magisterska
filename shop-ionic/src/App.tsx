@@ -16,7 +16,6 @@ import CartScreen          from './screens/CartScreen'
 import CheckoutScreen      from './screens/CheckoutScreen'
 import OrdersScreen        from './screens/OrdersScreen'
 
-/* wymagane style Ionica */
 import '@ionic/react/css/core.css'
 import '@ionic/react/css/normalize.css'
 import '@ionic/react/css/structure.css'
@@ -25,8 +24,6 @@ import './theme/variables.css'
 
 setupIonicReact()
 
-// Odczyt jest asynchroniczny, ale kończy się długo przed pierwszym flush().
-// Błąd musi być głośny: po cichu wróciłby 'nieznane' i asymetria metadanych.
 getDeviceInfo()
   .then(configureDevice)
   .catch(e => console.error('[POMIAR] nie udało się odczytać modelu urządzenia', e))

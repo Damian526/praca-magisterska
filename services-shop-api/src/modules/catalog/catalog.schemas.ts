@@ -1,6 +1,5 @@
 import { Type, type Static } from "@sinclair/typebox";
 
-/* ---------- Model odpowiedzi ---------- */
 
 export const ServiceDto = Type.Object({
   id: Type.String(),
@@ -33,7 +32,6 @@ export const ServiceListResponse = Type.Object({
   meta: PaginationMeta,
 });
 
-/* ---------- Parametry zapytania ---------- */
 
 export const ServiceListQuery = Type.Object({
   category: Type.Optional(Type.String()),
@@ -49,7 +47,6 @@ export const ServiceListQuery = Type.Object({
     ],
     { default: "default" },
   ),
-  // tylko w TEST_MODE — sztuczne opóźnienie do analizy jakościowej
   delay: Type.Optional(Type.Integer({ minimum: 0, maximum: 5000 })),
 });
 

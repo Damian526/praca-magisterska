@@ -29,8 +29,6 @@ export async function verifyCredentials(
   password: string,
 ) {
   const user = await prisma.user.findUnique({ where: { email } });
-  // Ten sam komunikat dla "nie ma użytkownika" i "złe hasło"
-  // — nie zdradzamy, które konta istnieją.
   if (!user) throw Unauthorized("Nieprawidłowy email lub hasło");
 
   const ok = await bcrypt.compare(password, user.passwordHash);

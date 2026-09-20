@@ -29,7 +29,6 @@ export default function CatalogScreen() {
     setTotalPages(data.meta.totalPages)
     setPage(p)
 
-    // ⭐ WSKAŹNIK 1 — czas uruchomienia (tylko pierwsza strona)
     if (p === 1 && !startupRecorded.current) {
       startupRecorded.current = true
       afterPaint(() => {
@@ -44,15 +43,13 @@ export default function CatalogScreen() {
 
   useEffect(() => { load(1) }, [load])
 
-  // ⭐ WSKAŹNIK 2 — znacznik z momentu kliknięcia w URL
   const openDetail = useCallback((id: string) => {
     history.push(`/service/${id}?t=${now()}`)
   }, [history])
 
-  // doładowanie kolejnej strony (odpowiednik onEndReached z FlatList)
   const loadMore = useCallback(async (e: InfiniteScrollCustomEvent) => {
     if (page < totalPages) await load(page + 1)
-    e.target.complete()   // WYMAGANE: mówi IonInfiniteScroll, że skończył
+    e.target.complete()
   }, [page, totalPages, load])
 
   return (

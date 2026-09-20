@@ -1,6 +1,5 @@
 import { Type, type Static } from "@sinclair/typebox";
 
-/* ---------- Wejście: tworzenie zamówienia ---------- */
 
 export const CreateOrderItem = Type.Object({
   serviceId: Type.String({ pattern: "^srv_[0-9]{3,}$" }),
@@ -13,7 +12,6 @@ export const CreateOrderBody = Type.Object({
   customerEmail: Type.String({ format: "email", maxLength: 120 }),
 });
 
-/* ---------- Wyjście ---------- */
 
 export const OrderItemDto = Type.Object({
   serviceId: Type.String(),
@@ -40,8 +38,6 @@ export const OrderDto = Type.Object({
   items: Type.Array(OrderItemDto),
 });
 
-// Ten sam kształt co ServiceListResponse — obie aplikacje mobilne
-// mogą użyć DOKŁADNIE tego samego kodu obsługi paginacji.
 export const OrderListResponse = Type.Object({
   data: Type.Array(OrderDto),
   meta: Type.Object({
@@ -52,7 +48,6 @@ export const OrderListResponse = Type.Object({
   }),
 });
 
-/* ---------- Parametry ---------- */
 
 export const OrderListQuery = Type.Object({
   page: Type.Integer({ minimum: 1, default: 1 }),

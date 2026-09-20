@@ -33,8 +33,6 @@ export default function CatalogScreen({ navigation }: Props) {
       setTotalPages(data.meta.totalPages)
       setPage(p)
 
-      // ⭐ WSKAŹNIK 1 — czas uruchomienia.
-      // Mierzony tylko przy pierwszym załadowaniu, po narysowaniu klatki.
       if (p === 1 && !startupRecorded.current) {
         startupRecorded.current = true
         afterPaint(() => {
@@ -52,8 +50,6 @@ export default function CatalogScreen({ navigation }: Props) {
 
   useEffect(() => { load(1) }, [])   // eslint-disable-line react-hooks/exhaustive-deps
 
-  /** ⭐ WSKAŹNIK 2 — czas reakcji UI.
-   *  Znacznik z momentu dotknięcia przekazujemy do ekranu docelowego. */
   const openDetail = useCallback((serviceId: string) => {
     navigation.navigate('ServiceDetail', { serviceId, measureStart: now() })
   }, [navigation])
@@ -94,8 +90,6 @@ export default function CatalogScreen({ navigation }: Props) {
         data={items}
         keyExtractor={i => i.id}
         renderItem={renderItem}
-        // ⚠️ getItemLayout wymaga stałej wysokości wiersza — dlatego
-        // LIST_ITEM_HEIGHT jest w theme.ts i identyczne w obu apkach.
         getItemLayout={(_, index) => ({
           length: LIST_ITEM_HEIGHT, offset: LIST_ITEM_HEIGHT * index, index
         })}

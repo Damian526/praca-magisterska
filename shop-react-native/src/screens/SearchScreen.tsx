@@ -21,7 +21,6 @@ export default function SearchScreen({ navigation }: Props) {
 
   useEffect(() => { apiCategories().then(r => setCats(r.data)) }, [])
 
-  // Debounce — identyczna wartość w obu apkach (SEARCH_DEBOUNCE_MS)
   useEffect(() => {
     if (timer.current) clearTimeout(timer.current)
     timer.current = setTimeout(async () => {

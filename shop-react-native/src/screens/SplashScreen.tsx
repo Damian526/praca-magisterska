@@ -12,7 +12,6 @@ export default function SplashScreen({ navigation }: Props) {
 
   useEffect(() => {
     if (!ready) return
-    // replace, nie navigate — splash znika ze stosu nawigacji
     navigation.replace(user ? 'Catalog' : 'Login')
   }, [ready, user, navigation])
 

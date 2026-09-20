@@ -23,8 +23,6 @@ export default function RootNavigator() {
         screenOptions={{
           headerStyle: { backgroundColor: COLORS.surface },
           headerTintColor: COLORS.text,
-          // ⚠️ Ta sama animacja przejścia co w Ionicu.
-          // Różne animacje = różny koszt renderowania przy nawigacji.
           animation: 'slide_from_right'
         }}
       >

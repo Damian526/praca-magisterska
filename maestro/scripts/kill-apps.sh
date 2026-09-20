@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
-# użycie: ./kill-apps.sh
-#
-# Ubija OBIE aplikacje testowe. Uruchamiaj przed KAŻDYM przebiegiem Maestro.
-#
-# Bez tego druga mierzona platforma startuje przy pierwszej siedzącej w tle
-# (~280 MB rezydentnie), a pierwsza startowała bez niej — warunki przestają być
-# symetryczne. Flow i tak sam uruchamia aplikację, którą mierzy.
-#
-# ⚠️ NIE ubijamy dev.mobile.maestro — to aplikacja sterująca, bez niej Maestro padnie.
+# Użycie: ./kill-apps.sh
 set -e
 
 adb shell am force-stop com.shopreactnative

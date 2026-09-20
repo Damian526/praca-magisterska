@@ -18,7 +18,6 @@ export default function ServiceDetailScreen() {
   const { add } = useCart()
   const [service, setService] = useState<Service | null>(null)
 
-  // odczyt znacznika z URL (?t=...)
   const measureStart = Number(new URLSearchParams(location.search).get('t')) || undefined
 
   useEffect(() => {
@@ -28,8 +27,6 @@ export default function ServiceDetailScreen() {
       const tData = now()
       setService(data)
 
-      // ⭐ WSKAŹNIK 2 — kliknięcie -> gotowy ekran. Z czasem sieci w środku;
-      //    rozbicie idzie do `extra`.
       if (measureStart !== undefined) {
         afterPaint(() => {
           const tPainted = now()
@@ -44,7 +41,7 @@ export default function ServiceDetailScreen() {
         })
       }
     })()
-  }, [id])   // measureStart celowo pominięte — mierzymy raz, przy wejściu
+  }, [id])
 
   return (
     <IonPage>

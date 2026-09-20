@@ -24,8 +24,6 @@ export default function ServiceDetailScreen({ route, navigation }: Props) {
       const tData = now()
       setService(data)
 
-      // ⭐ WSKAŹNIK 2 — dotknięcie -> gotowy ekran. Z czasem sieci w środku;
-      //    rozbicie idzie do `extra`.
       if (measureStart !== undefined) {
         afterPaint(() => {
           const tPainted = now()
