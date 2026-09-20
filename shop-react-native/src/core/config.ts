@@ -6,8 +6,8 @@ export const API_URL = 'http://localhost:3000';
 
 /* Seria pomiarowa. Ustawiaj przez `maestro/scripts/set-run.sh`, potem przebuduj
    aplikację — zła wartość po cichu podpisze cały przebieg złym scenariuszem. */
-export const SESSION_ID = 'ses_02';
-export const SCENARIO: 'S1' | 'S2' | 'S3' = 'S1';
+export const SESSION_ID = 'ses_06';
+export const SCENARIO: 'S1' | 'S2' | 'S3' = 'S3';
 export const RUN_ID = `${SESSION_ID}_${SCENARIO}`;
 
 export const ADMIN_TOKEN = 'token-do-endpointow-badawczych';

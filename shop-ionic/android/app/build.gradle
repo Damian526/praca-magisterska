@@ -18,6 +18,11 @@ android {
     }
     buildTypes {
         release {
+            // Podpis kluczem debug — tak samo jak fallback w React Native
+            // (android/app/build.gradle). Bez tego APK release jest niepodpisany
+            // i nie da się go zainstalować, a pomiary musiałyby lecieć na buildzie
+            // debug, czyli w innym wariancie niż aplikacja porównywana.
+            signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

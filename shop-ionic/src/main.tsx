@@ -1,4 +1,4 @@
-globalThis.__APP_START__ = globalThis.performance?.now() ?? Date.now()
+import './anchor' // ⚠️ MUSI zostać pierwszym importem — ustawia znacznik startu
 
 import React from 'react'
 import { createRoot } from 'react-dom/client'
