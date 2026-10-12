@@ -1,0 +1,7 @@
+hipoteza,metryka,scenariusz,n_rn,n_ionic,U,z,p,r_rb,r_z_sqrtN,efekt,lepsza
+H1.3,RAM_PSS_MB,S1,489,425,35433.5,-17.20,2.55e-66,-0.659,0.569,duża,RN
+H1.3,RAM_PSS_MB,S2,552,472,573.0,-27.49,2.12e-166,-0.996,0.859,duża,RN
+H1.3,RAM_PSS_MB,S3,1279,1034,175587.5,-30.41,3.84e-203,-0.734,0.632,duża,RN
+H1.4,CPU_PERCENT,S1,460,425,94644.5,0.82,0.413,0.032,0.028,znikoma,bez różnicy
+H1.4,CPU_PERCENT,S2,552,472,93693.5,7.76,8.32e-15,0.281,0.243,mała,Ionic
+H1.4,CPU_PERCENT,S3,1279,1034,600947.5,3.78,0.000157,0.091,0.079,znikoma,Ionic (pomijalnie)

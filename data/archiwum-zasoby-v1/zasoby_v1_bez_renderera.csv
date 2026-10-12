@@ -1,0 +1,7 @@
+scenariusz,metryka,jednostka,n_rn,n_ionic,rn_mediana,rn_q1,rn_q3,rn_p95,ionic_mediana,ionic_q1,ionic_q3,ionic_p95,shapiro_p_rn,shapiro_p_ionic,mannwhitney_p,efekt_r,efekt_opis,lepsza
+S1,CPU_PERCENT,MB / %,460,616,19.3,10.0,33.3,190.15,16.6,10.0,60.0,140.0,0.0,0.0,0.630549,-0.017,znikoma,bez różnicy
+S1,RAM_PSS_MB,MB / %,489,654,162.19,159.61,163.34,165.03,152.0,144.19,156.44,161.63,0.0,0.0,0.0,0.594,duża,Ionic
+S2,CPU_PERCENT,MB / %,552,541,16.6,10.0,36.6,86.38,10.0,3.2,26.6,109.0,0.0,0.0,0.0,0.305,średnia,Ionic
+S2,RAM_PSS_MB,MB / %,552,541,151.06,148.69,152.3,156.19,166.67,160.57,171.75,177.87,0.0,0.0,0.0,-0.934,duża,RN
+S3,CPU_PERCENT,MB / %,1279,1125,20.0,13.3,53.3,93.3,13.3,6.6,36.6,113.0,0.0,0.0,0.0,0.236,mała,Ionic
+S3,RAM_PSS_MB,MB / %,1279,1125,228.89,218.83,232.88,236.67,182.14,175.98,188.17,195.75,0.0,0.0,0.0,0.972,duża,Ionic

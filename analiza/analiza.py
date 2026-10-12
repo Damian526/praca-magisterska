@@ -64,6 +64,10 @@ def wczytaj_zasoby(z_pilotazem=False, sesje=None):
     `sesje` filtruje po numerze sesji zaszytym w run_id (`ses_04r_S1` → ses_04).
     Bez tego filtra dane z różnych warunków pomiarowych (pilotaż vs sesje poprawione)
     trafiały do jednej puli — czyli dokładnie to, czego w pracy robić nie wolno.
+
+    Pliki Ionica w starym formacie (bez kolumny `n_renderer`, sample-resources.sh v1)
+    są pomijane: v1 nie liczył procesu renderera WebView, więc RAM/CPU były zaniżone.
+    RN w starym formacie zostaje — nie ma renderera, v1 i v2 mierzą go tak samo.
     """
     wiersze = []
     wzorce = [os.path.join(KATALOG, "data", "resources", "*.csv")]
@@ -72,7 +76,11 @@ def wczytaj_zasoby(z_pilotazem=False, sesje=None):
 
     for sciezka in sorted(sum([glob.glob(w) for w in wzorce], [])):
         with open(sciezka) as f:
-            for r in csv.DictReader(f):
+            czytnik = csv.DictReader(f)
+            if "n_renderer" not in (czytnik.fieldnames or []) and "ionic" in os.path.basename(sciezka).lower():
+                print(f"⚠️  Pomijam {os.path.basename(sciezka)} — Ionic bez renderera WebView (skrypt v1).")
+                continue
+            for r in czytnik:
                 run_id = r["run_id"]
                 if sesje:
                     m_ses = re.search(r"(ses_\d+)", run_id)
@@ -284,6 +292,10 @@ def main():
     p.add_argument("--sesje", nargs="*", help="np. --sesje ses_02 ses_03 (domyślnie wszystkie)")
     p.add_argument("--bez-odstajacych", action="store_true", help="odrzuć odstające (MAD 3σ) przed testami")
     p.add_argument("--z-pilotazem", action="store_true", help="dolicz zasoby z data/archiwum-pilotaz/")
+    p.add_argument("--sesje-zasoby", nargs="*",
+                   help="sesje dla RAM/CPU, jeśli inne niż dla czasów, np. "
+                        "--sesje-zasoby ses_04 ses_05 ses_06 ses_07 ses_08 ses_09 "
+                        "(RN z 4–6, Ionic z 7–9 — zmierzony ponownie skryptem v2, z rendererem WebView)")
     args = p.parse_args()
 
     czasy = wczytaj_czasy(args.sesje)
@@ -311,7 +323,7 @@ def main():
         dane_czasy[(w["scenariusz"], w["metryka"])][w["platforma"]].append(w["wartosc"])
     tabela_porownawcza(dane_czasy, "ms", "CZASY — React Native vs Ionic", "czasy.csv")
 
-    zasoby = wczytaj_zasoby(args.z_pilotazem, args.sesje)
+    zasoby = wczytaj_zasoby(args.z_pilotazem, args.sesje_zasoby or args.sesje)
     if zasoby:
         print(f"\nWczytano {len(zasoby)} próbek zasobów.")
         dane_zasoby = defaultdict(lambda: defaultdict(list))
