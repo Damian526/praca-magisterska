@@ -288,6 +288,9 @@ cały przebieg złym scenariuszem, stąd jawna walidacja argumentów.
 
 ### `sample-resources.sh <pakiet> <platforma> <runId> <sekundy>`
 
+> ⚠️ Poniżej wersja 1 (sesje 1–6), która **nie liczyła renderera WebView**. Od 11.10
+> obowiązuje wersja 2 — patrz §10.2.
+
 Zbiera zużycie zasobów, próbkując z zewnątrz przez adb — **nie ingeruje w kod aplikacji**:
 
 ```bash
@@ -639,7 +642,10 @@ Ionica — §7.2 pozostaje w mocy niezależnie od wariantu builda; siła efektu 
 jest niespójna z „istotnością" wynikającą wyłącznie z dużego n. `STARTUP_MS` w S2/S3
 ma n=3 na platformę (jeden start na przebieg) — za mało na test, skrypt zwraca „—".
 
-### 8.2 Zasoby — wynik finalny
+### 8.2 Zasoby — wynik z sesji 4–6 (⚠️ NIEAKTUALNE dla Ionica — patrz §10)
+
+> Ionic mierzony skryptem v1 bez procesu renderera WebView, więc RAM i CPU są zaniżone.
+> Aktualne wyniki: §10.4. Wiersze RN pozostają ważne.
 
 | Scen. | Metryka | RN mediana | Ionic mediana | p | efekt r | lepsza |
 |---|---|---|---|---|---|---|
@@ -780,3 +786,149 @@ teraz po numerze sesji zaszytym w `run_id` (`ses_04r_S1` → `ses_04`). Wniosek:
 korzystaniu z tego narzędzia do dalszych sesji (ewentualna `ses_07` itd.) warto
 sprawdzić wynikowe „Wczytano N próbek zasobów" pod kątem wiarygodności rzędu
 wielkości, zanim zaufa się liczbom w tabeli.
+
+---
+
+## 10. Ponowny pomiar zasobów Ionica z rendererem WebView (sesje 7–9, 11.10.2026)
+
+### 10.1 Wada: `sample-resources.sh` v1 nie liczył procesu renderera WebView
+
+Od Androida 8 WebView renderuje w **osobnym, izolowanym procesie**
+(`com.google.android.webview:sandboxed_process0:…`, rodzic `webview_zygote`). W nim
+działają V8, DOM, style, layout i dekodowanie obrazków. Proces aplikacji
+(`io.ionic.starter`) zawiera tylko część WebView po stronie aplikacji (w tym kompozytor/GPU).
+
+Skrypt v1 (sesje 1–6) liczył `dumpsys meminfo <pakiet>` i `top | grep <pakiet>`,
+czyli **wyłącznie proces aplikacji**. Renderer ma w nazwie pakiet WebView, nie aplikacji,
+więc nie był liczony. **RAM i CPU Ionica z sesji 1–6 są zaniżone** (§8.2 nieaktualne
+dla Ionica). React Native nie używa WebView (brak zależności w `package.json`), więc
+jego pomiar był kompletny.
+
+Zmierzone na urządzeniu (Ionic otwarty, katalog): proces aplikacji ≈117 MB PSS,
+renderer ≈70–73 MB PSS, czyli renderer to około **⅓ pamięci Ionica**.
+
+### 10.2 Naprawa: `sample-resources.sh` v2
+
+- Renderer przypisywany do aplikacji przez `dumpsys activity services <pakiet>`. Usługa
+  `SandboxedProcessService` jest rejestrowana na pakiet gospodarza, a jej
+  `app=ProcessRecord{… <pid>:…}` wskazuje proces renderera.
+- **Nie** po nazwie procesu, bo renderery wszystkich aplikacji nazywają się identycznie.
+  Na tym telefonie w tle działają cudze renderery: `com.miui.msa.global` (reklamy
+  systemowe Xiaomi) i `com.mi.appfinder`. Uruchamiają się ponownie po każdym powrocie
+  na pulpit, a to w S1 dzieje się 30 razy.
+- RAM = PSS procesu aplikacji + PSS renderera(ów); CPU = `%CPU` z `top` dla obu.
+  Nowe kolumny: `pss_main_mb, pss_renderer_mb, cpu_main, cpu_renderer, n_renderer`.
+- Jedno wywołanie `adb shell` na próbkę, realnie ok. 1,35 s na próbkę (v1: ok. 1,05 s).
+- `kill-apps.sh` zatrzymuje próbkowanie, które zostało w tle po przerwanym bloku
+  (pierwsza próba sesji 7 miała dwa skrypty naraz, odrzucona i powtórzona).
+- `analiza.py` pomija pliki Ionica w formacie v1; nowa opcja `--sesje-zasoby`.
+
+Zweryfikowane na urządzeniu: renderer złapany w 97–100% próbek Ionica (w S1 mniej,
+bo między restartami aplikacji renderera chwilę nie ma), RN 0 rendererów, CPU renderera
+rośnie przy przewijaniu.
+
+### 10.3 Warunki sesji 7–9
+
+| Sesja | Start | Bateria | S1 / S2 / S3 (czas przebiegu) |
+|---|---|---|---|
+| 7 | 20:38 | 28°C | 227 / 209 / 466 s |
+| 8 | 21:02 | 29°C | 227 / 208 / 464 s |
+| 9 | 21:27 | 30°C (odczyt 21:20) | 228 / 211 / 459 s |
+| *4 (wrzesień, dla porównania)* | | | *230 / 219 / 462 s* |
+
+- Jeden dzień, przerwy do powrotu temperatury baterii do poziomu wyjściowego (+≤2°C).
+  Sesje 4–6 też były jednego dnia (9.09: 14:24, 17:19, 21:41).
+- Telefon na ładowarce (USB), tryb samolotowy, aplikacje w tle ubite
+  (+ `com.mi.appfinder`, `com.miui.msa.global`).
+- `Thermal Status` stał na 1 przez cały wieczór, ale był to **zawieszony odczyt**:
+  „Cached temperatures” niezmienne (SKIN 43,0°C, CPU 59,6°C), a bieżące z HAL
+  SKIN 30–32°C, CPU 33–35°C, bateria 28–30°C, wszystko daleko poniżej progów
+  (SKIN: 43°C dla statusu 1).
+- Brak aktualizacji systemu od sesji 4–6: `ro.build.date` 6.07.2026,
+  `OS3.0.302.0.WGTEUXM`, poprawka bezpieczeństwa 2026-07-01.
+- **WebView zaktualizowany 7.10.2026 do 153.0.8010.57**, czyli po sesjach 4–6.
+  Dotyczy tylko Ionica. Zasoby Ionica (sesje 7–9) zmierzone na WebView 153,
+  czasy Ionica (sesje 4–6) na wersji z września (nieodnotowanej).
+- RN nie był mierzony ponownie: nie używa WebView, a system się nie zmienił.
+
+### 10.4 Wyniki — mediany per sesja (jednostka replikacji = przebieg, por. §8.4)
+
+**RAM PSS (MB)**
+
+| Scen. | RN (ses 4 / 5 / 6) | Ionic v2 (ses 7 / 8 / 9) | Ionic − RN | zakresy się nakładają? |
+|---|---|---|---|---|
+| S1 | 162,5 / 162,6 / 161,5 | 191,9 / 192,8 / 190,9 | +28 do +31 | nie |
+| S2 | 151,9 / 152,0 / 147,9 | 217,7 / 215,8 / 214,6 | +63 do +70 | nie |
+| S3 | 230,2 / 232,9 / 226,2 | 245,6 / 238,8 / 239,6 | +6 do +19 | nie |
+
+Składowe Ionica (mediany, średnio z 3 sesji): proces aplikacji / renderer
+S1 127 / 64, S2 141 / 75, S3 158 / 83 MB; renderer stanowi 33–35% w każdym scenariuszu.
+Zgodność międzysesyjna Ionica: 0,5–2,8%.
+
+**CPU (%, 100% = jeden rdzeń)**
+
+| Scen. | RN mediana (ses 4/5/6) | Ionic mediana (ses 7/8/9) | RN średnia | Ionic średnia |
+|---|---|---|---|---|
+| S1 | 20,0 / 23,3 / 13,3 | 16,6 / 16,6 / 16,6 | 48,8 / 46,0 / 36,6 | 51,6 / 55,5 / 54,1 |
+| S2 | 20,0 / 16,6 / 20,0 | 12,8 / 8,0 / 9,6 | 30,3 / 27,6 / 29,6 | 33,7 / 22,4 / 28,3 |
+| S3 | 20,0 / 20,0 / 20,0 | 16,6 / 20,0 / 19,3 | 35,7 / 34,9 / 34,5 | 43,6 / 45,2 / 43,2 |
+
+CPU z pojedynczych odczytów `top` jest silnie skokowe (mediana często trafia
+w przerwę między zrywami, wartości skwantowane co ok. 3,3 pp.), więc mediana
+i średnia dają różny obraz. Odczyt łączny:
+
+- S2: Ionic mediana niższa (zakresy się nie nakładają), średnie się nakładają. Słaba przewaga Ionica.
+- S1, S3: mediany podobne, a średnie wyższe dla Ionica (S3: 43–45 vs 35–36, bez nakładania).
+- **Wniosek: brak podstaw do twierdzenia, że Ionic zużywa mniej CPU.** Jeśli już,
+  to w S1/S3 więcej (średnie).
+
+Tabela z `analiza.py` (Mann-Whitney na próbkach, z zastrzeżeniem §8.4):
+`data/analiza/zasoby.csv`. RAM: RN lepszy w S1, S2, S3 (efekt r −0,7 / −1,0 / −0,7).
+CPU: S1 bez różnicy, S2 Ionic (r 0,3), S3 r 0,1 (znikoma).
+
+### 10.5 Co się zmieniło względem §8.2
+
+| | v1 (bez renderera) | v2 (z rendererem) |
+|---|---|---|
+| RAM S1 | Ionic lepszy (152 vs 162) | **RN lepszy** (192 vs 162) |
+| RAM S2 | RN lepszy (167 vs 151) | RN lepszy, różnica większa (216 vs 151) |
+| RAM S3 | Ionic lepszy (182 vs 229) | **RN lepszy** (241 vs 229) |
+| CPU | Ionic lepszy w S2 i S3 | Ionic lepszy tylko w S2 (mediana); S1/S3 bez przewagi lub gorzej |
+
+**Koszt krańcowy RAM** (przyrost między scenariuszami, mediany):
+
+| | S1 → S2 | S2 → S3 |
+|---|---|---|
+| RN | −11 MB | **+78 MB** |
+| Ionic v1 | +15 MB | +15 MB |
+| Ionic v2 | +24 MB | **+25 MB** |
+
+Obserwacja „Ionic rośnie wolniej niż RN przy przejściu do S3” **przetrwała**
+(+25 vs +78 MB), ale jest słabsza niż w v1. Renderer też rośnie (64 → 75 → 83 MB).
+Ionic startuje jednak z wyższego poziomu bazowego, więc w każdym scenariuszu
+zużywa więcej RAM niż RN.
+
+### 10.6 Proces aplikacji Ionica: v1 vs v2
+
+Proces aplikacji w v2 wychodzi o ok. 24 MB niżej niż w v1 (mediany sesji:
+S1 127 vs 152, S2 141 vs 166, S3 157 vs 182), stabilnie we wszystkich scenariuszach.
+Prawdopodobne przyczyny (niezweryfikowane):
+
+1. aktualizacja WebView 7.10 (inny podział pamięci między procesem aplikacji a rendererem),
+2. PSS dzieli strony współdzielone (np. biblioteka WebView) między wszystkie procesy,
+   które je mapują, więc udział procesu aplikacji zależy od liczby procesów WebView w systemie.
+
+Skutek dla pracy: suma v2 nie jest równa „v1 + renderer”. Porównanie
+z RN opiera się wyłącznie na v2.
+
+### 10.7 Pliki
+
+| Plik | Zawartość |
+|---|---|
+| `data/resources/resources_IONIC_ses_0{7,8,9}r_S{1,2,3}.csv` | Ionic v2, z rendererem |
+| `data/resources/resources_REACT_NATIVE_ses_0{4,5,6}r_S{1,2,3}.csv` | RN (bez zmian) |
+| `data/archiwum-zasoby-v1/` | Ionic v1 (sesje 1–6), bez renderera, tylko do porównań |
+| `data/analiza/zasoby.csv` | tabela zasobów (RN 4–6, Ionic 7–9) |
+| `INSTRUKCJA_ZASOBY_V2.md` | procedura sesji 7–9 |
+
+Komenda: `.venv/bin/python analiza/analiza.py --sesje ses_04 ses_05 ses_06 --sesje-zasoby ses_04 ses_05 ses_06 ses_07 ses_08 ses_09`
