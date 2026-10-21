@@ -1,0 +1,158 @@
+WERYFIKACJA HIPOTEZ — czasy i zasoby RN: ses_04, zasoby Ionic: ses_07
+Wartości krytyczne (α = 0,05): W_kr = 0,927 (Shapiro-Wilk, n = 30); U_kr = 317 (n1 = n2 = 30); W_kr Levene'a = F(0,05; 1; 58) = 4,007; t_kr = 2,002 (k = 58).
+Liczba odczytów zasobów (RAM / CPU) użytych w odcinkach: Ionic S1: 141/141, Ionic S2: 157/157, Ionic S3: 347/347, RN S1: 148/143, RN S2: 182/182, RN S3: 428/428
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+1. CZAS URUCHAMIANIA SIĘ APLIKACJI  (tabela: tab_1_czas_uruchamiania.csv)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Brzmienie hipotezy: Przypuszczam, że istnieją istotne różnice w czasie uruchamiania się projektowanej aplikacji zaimplementowanej na bazie analizowanych technologii.
+
+— ANALIZA ILOŚCIOWA —
+Średnia wartość wynosiła 588,38 ms dla React Native oraz 474,85 ms dla Ionic — różnica na korzyść technologii Ionic (niższa wartość jest korzystniejsza).
+Współczynnik zmienności dla React Native: V = 9,20% → wyniki stabilne.
+Współczynnik zmienności dla Ionic: V = 21,16% → wyniki stabilne.
+
+— ANALIZA STATYSTYCZNA —
+H₁: Przypuszczam, że istnieją istotne różnice w czasie uruchamiania się projektowanej aplikacji zaimplementowanej na bazie analizowanych technologii.
+H₀: Przypuszczam, że nie istnieją istotne różnice w czasie uruchamiania się projektowanej aplikacji zaimplementowanej na bazie analizowanych technologii.
+
+Test normalności rozkładu
+Dla grupy pierwszej (React Native):
+  • W = 0,821;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+Dla grupy drugiej (Ionic):
+  • W = 0,274;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+
+W związku z tym, że nie został spełniony warunek normalności rozkładu (dla obu grup), do weryfikacji hipotezy zastosowano nieparametryczny test U Manna-Whitneya.
+  • U = 30,0;
+  • U_kr = 317.
+Wniosek końcowy: U ≤ U_kr. Tak więc odrzucamy H₀, a przyjmujemy H₁.
+
+— Wartości pośrednie (nie wklejać, do kontroli) —
+  Shapiro-Wilk React Native: Σ a_i·(x_(n−i+1) − x_i) = 264,2069, jej kwadrat = 69805,2770, Σ(x_i − x̄)² = 85035,8645, W = 0,8209
+  Shapiro-Wilk Ionic: Σ a_i·(x_(n−i+1) − x_i) = 283,0367, jej kwadrat = 80109,7792, Σ(x_i − x̄)² = 292757,2550, W = 0,2736
+  U Manna-Whitneya: R1 = 1335,0, R2 = 495,0, U1 = 30,0, U2 = 870,0, U1 + U2 = 900,0 = n1·n2 = 900, U = min(U1, U2) = 30,0
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+2. CZAS REAKCJI APLIKACJI NA DZIAŁANIA UŻYTKOWNIKA  (tabela: tab_2_czas_reakcji.csv)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Brzmienie hipotezy: Przypuszczam, że istnieją istotne różnice w czasie reakcji projektowanej aplikacji na wybrane działania użytkownika, zaimplementowanej na bazie analizowanych technologii.
+
+— ANALIZA ILOŚCIOWA —
+Średnia wartość wynosiła 93,16 ms dla React Native oraz 96,43 ms dla Ionic — różnica na korzyść technologii React Native (niższa wartość jest korzystniejsza).
+Stabilność liczona osobno dla każdego rodzaju działania (dla całej tabeli nie ma sensu, bo działania są różne):
+  • Otwarcie szczegółów usługi: średnia RN 123,13 ms, Ionic 166,32 ms (korzystniej: React Native); V RN = 7,58% (stabilne), V Ionic = 36,24% (średnio stabilne — wyjaśnij przyczynę).
+  • Otwarcie szczegółów usługi po przewinięciu listy: średnia RN 128,71 ms, Ionic 170,80 ms (korzystniej: React Native); V RN = 13,09% (stabilne), V Ionic = 33,86% (średnio stabilne — wyjaśnij przyczynę).
+  • Wysłanie zamówienia do API: średnia RN 52,27 ms, Ionic 48,62 ms (korzystniej: Ionic); V RN = 13,20% (stabilne), V Ionic = 47,81% (niestabilne — wyjaśnij przyczynę).
+  • Wyświetlenie ekranu po złożeniu zamówienia: średnia RN 89,49 ms, Ionic 67,28 ms (korzystniej: Ionic); V RN = 11,93% (stabilne), V Ionic = 18,78% (stabilne).
+  • Wyświetlenie historii zamówień: średnia RN 72,22 ms, Ionic 29,12 ms (korzystniej: Ionic); V RN = 18,61% (stabilne), V Ionic = 16,43% (stabilne).
+
+— ANALIZA STATYSTYCZNA —
+H₁: Przypuszczam, że istnieją istotne różnice w czasie reakcji projektowanej aplikacji na wybrane działania użytkownika, zaimplementowanej na bazie analizowanych technologii.
+H₀: Przypuszczam, że nie istnieją istotne różnice w czasie reakcji projektowanej aplikacji na wybrane działania użytkownika, zaimplementowanej na bazie analizowanych technologii.
+
+Test normalności rozkładu
+Dla grupy pierwszej (React Native):
+  • W = 0,932;
+  • W_kr = 0,927.
+Wniosek: W > W_kr, tak więc nie ma podstaw do odrzucenia H₀ zakładającej normalność rozkładu — rozkład jest normalny.
+Dla grupy drugiej (Ionic):
+  • W = 0,840;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+
+W związku z tym, że nie został spełniony warunek normalności rozkładu (dla grupy drugiej (Ionic)), do weryfikacji hipotezy zastosowano nieparametryczny test U Manna-Whitneya.
+  • U = 412,0;
+  • U_kr = 317.
+Wniosek końcowy: U > U_kr. Tak więc nie ma podstaw do odrzucenia H₀.
+
+— Wartości pośrednie (nie wklejać, do kontroli) —
+  Shapiro-Wilk React Native: Σ a_i·(x_(n−i+1) − x_i) = 165,2063, jej kwadrat = 27293,1381, Σ(x_i − x̄)² = 29284,4935, W = 0,9320
+  Shapiro-Wilk Ionic: Σ a_i·(x_(n−i+1) − x_i) = 351,4654, jej kwadrat = 123527,9204, Σ(x_i − x̄)² = 146995,8587, W = 0,8403
+  U Manna-Whitneya: R1 = 953,0, R2 = 877,0, U1 = 412,0, U2 = 488,0, U1 + U2 = 900,0 = n1·n2 = 900, U = min(U1, U2) = 412,0
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+3. ŚREDNIE ZUŻYCIE PAMIĘCI OPERACYJNEJ RAM  (tabela: tab_3_srednie_zuzycie_ram.csv)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Brzmienie hipotezy: Przypuszczam, że istnieją istotne różnice w średnim zużyciu pamięci operacyjnej RAM przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+
+— ANALIZA ILOŚCIOWA —
+Średnia wartość wynosiła 173,28 MB dla React Native oraz 213,23 MB dla Ionic — różnica na korzyść technologii React Native (niższa wartość jest korzystniejsza).
+Stabilność liczona osobno dla każdego rodzaju działania (dla całej tabeli nie ma sensu, bo działania są różne):
+  • Uruchamianie aplikacji: średnia RN 143,57 MB, Ionic 179,83 MB (korzystniej: React Native); V RN = 4,76% (stabilne), V Ionic = 2,19% (stabilne).
+  • Przeglądanie szczegółów usługi: średnia RN 151,31 MB, Ionic 216,09 MB (korzystniej: React Native); V RN = 0,85% (stabilne), V Ionic = 2,52% (stabilne).
+  • Ścieżka zakupowa: średnia RN 224,98 MB, Ionic 243,75 MB (korzystniej: React Native); V RN = 5,08% (stabilne), V Ionic = 2,61% (stabilne).
+
+— ANALIZA STATYSTYCZNA —
+H₁: Przypuszczam, że istnieją istotne różnice w średnim zużyciu pamięci operacyjnej RAM przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+H₀: Przypuszczam, że nie istnieją istotne różnice w średnim zużyciu pamięci operacyjnej RAM przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+
+Test normalności rozkładu
+Dla grupy pierwszej (React Native):
+  • W = 0,734;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+Dla grupy drugiej (Ionic):
+  • W = 0,876;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+
+W związku z tym, że nie został spełniony warunek normalności rozkładu (dla obu grup), do weryfikacji hipotezy zastosowano nieparametryczny test U Manna-Whitneya.
+  • U = 186,0;
+  • U_kr = 317.
+Wniosek końcowy: U ≤ U_kr. Tak więc odrzucamy H₀, a przyjmujemy H₁.
+
+— Wartości pośrednie (nie wklejać, do kontroli) —
+  Shapiro-Wilk React Native: Σ a_i·(x_(n−i+1) − x_i) = 175,6065, jej kwadrat = 30837,6604, Σ(x_i − x̄)² = 41989,2099, W = 0,7344
+  Shapiro-Wilk Ionic: Σ a_i·(x_(n−i+1) − x_i) = 136,6918, jej kwadrat = 18684,6438, Σ(x_i − x̄)² = 21320,1913, W = 0,8764
+  U Manna-Whitneya: R1 = 651,0, R2 = 1179,0, U1 = 714,0, U2 = 186,0, U1 + U2 = 900,0 = n1·n2 = 900, U = min(U1, U2) = 186,0
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+4. ŚREDNIE OBCIĄŻENIE PROCESORA  (tabela: tab_4_srednie_obciazenie_cpu.csv)
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Brzmienie hipotezy: Przypuszczam, że istnieją istotne różnice w średnim obciążeniu procesora przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+
+— ANALIZA ILOŚCIOWA —
+Średnia wartość wynosiła 38,22 % dla React Native oraz 42,97 % dla Ionic — różnica na korzyść technologii React Native (niższa wartość jest korzystniejsza).
+Stabilność liczona osobno dla każdego rodzaju działania (dla całej tabeli nie ma sensu, bo działania są różne):
+  • Uruchamianie aplikacji: średnia RN 48,69 %, Ionic 51,49 % (korzystniej: React Native); V RN = 11,91% (stabilne), V Ionic = 32,11% (średnio stabilne — wyjaśnij przyczynę).
+  • Przeglądanie szczegółów usługi: średnia RN 30,29 %, Ionic 33,82 % (korzystniej: React Native); V RN = 10,67% (stabilne), V Ionic = 33,11% (średnio stabilne — wyjaśnij przyczynę).
+  • Ścieżka zakupowa: średnia RN 35,68 %, Ionic 43,59 % (korzystniej: React Native); V RN = 8,95% (stabilne), V Ionic = 19,75% (stabilne).
+
+— ANALIZA STATYSTYCZNA —
+H₁: Przypuszczam, że istnieją istotne różnice w średnim obciążeniu procesora przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+H₀: Przypuszczam, że nie istnieją istotne różnice w średnim obciążeniu procesora przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.
+
+Test normalności rozkładu
+Dla grupy pierwszej (React Native):
+  • W = 0,916;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+Dla grupy drugiej (Ionic):
+  • W = 0,923;
+  • W_kr = 0,927.
+Wniosek: W ≤ W_kr, tak więc odrzucamy H₀ zakładającą normalność rozkładu.
+
+W związku z tym, że nie został spełniony warunek normalności rozkładu (dla obu grup), do weryfikacji hipotezy zastosowano nieparametryczny test U Manna-Whitneya.
+  • U = 394,0;
+  • U_kr = 317.
+Wniosek końcowy: U > U_kr. Tak więc nie ma podstaw do odrzucenia H₀.
+
+— Wartości pośrednie (nie wklejać, do kontroli) —
+  Shapiro-Wilk React Native: Σ a_i·(x_(n−i+1) − x_i) = 45,6623, jej kwadrat = 2085,0419, Σ(x_i − x̄)² = 2277,1596, W = 0,9156
+  Shapiro-Wilk Ionic: Σ a_i·(x_(n−i+1) − x_i) = 73,3272, jej kwadrat = 5376,8756, Σ(x_i − x̄)² = 5823,0397, W = 0,9234
+  U Manna-Whitneya: R1 = 859,0, R2 = 971,0, U1 = 506,0, U2 = 394,0, U1 + U2 = 900,0 = n1·n2 = 900, U = min(U1, U2) = 394,0
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+WNIOSKI
+════════════════════════════════════════════════════════════════════════════════════════════════════
+Na podstawie wyników analizy ilościowej i statystycznej można stwierdzić, że:
+  • szczegółowa hipoteza badawcza brzmiąca: „Przypuszczam, że istnieją istotne różnice w czasie uruchamiania się projektowanej aplikacji zaimplementowanej na bazie analizowanych technologii.” została potwierdzona – potwierdziły ją wyniki analizy ilościowej, a wyniki analizy statystycznej dały podstawy do odrzucenia H₀;
+  • nic nie można powiedzieć na temat prawdziwości lub fałszywości szczegółowej hipotezy badawczej brzmiącej: „Przypuszczam, że istnieją istotne różnice w czasie reakcji projektowanej aplikacji na wybrane działania użytkownika, zaimplementowanej na bazie analizowanych technologii.”; co prawda występowanie różnic potwierdziły wyniki analizy ilościowej, jednak wyniki analizy statystycznej nie dały podstaw do odrzucenia H₀;
+  • szczegółowa hipoteza badawcza brzmiąca: „Przypuszczam, że istnieją istotne różnice w średnim zużyciu pamięci operacyjnej RAM przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.” została potwierdzona – potwierdziły ją wyniki analizy ilościowej, a wyniki analizy statystycznej dały podstawy do odrzucenia H₀;
+  • nic nie można powiedzieć na temat prawdziwości lub fałszywości szczegółowej hipotezy badawczej brzmiącej: „Przypuszczam, że istnieją istotne różnice w średnim obciążeniu procesora przez aplikację zaimplementowaną na bazie analizowanych technologii podczas realizacji działań użytkownika.”; co prawda występowanie różnic potwierdziły wyniki analizy ilościowej, jednak wyniki analizy statystycznej nie dały podstaw do odrzucenia H₀.
+
+Na podstawie powyższego można stwierdzić, że główna hipoteza badawcza brzmiąca: „Przypuszczam, że istnieją istotne różnice w wydajności aplikacji mobilnej zaimplementowanej na bazie analizowanych technologii” została potwierdzona, jednak nie w całym zakresie zmiennej zależnej – wydajności aplikacji mobilnej zdefiniowanej w niniejszej pracy.

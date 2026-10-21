@@ -26,6 +26,7 @@ maestro/                scenariusze S1–S3 (Maestro)
 maestro/scripts/        skrypty pomocnicze: konfiguracja serii, próbkowanie zasobów,
                         eksport pomiarów, kopia bazy, zerowanie zamówień
 analiza/analiza.py      analiza statystyczna (mediany, Shapiro-Wilk, Mann-Whitney)
+analiza/weryfikacja_hipotez.py  weryfikacja hipotez w wersji do pracy (30 prób, wzory z wykładu)
 data/                   zebrane dane i wyniki analizy (opis niżej)
 OPIS_STANOWISKA.md      opis stanowiska i wyników
 INSTRUKCJA_*.md         procedury pomiarowe poszczególnych etapów (opis niżej)
@@ -76,6 +77,35 @@ python3 -m venv .venv
 
 Wyniki trafiają do `data/analiza/` (`czasy.csv`, `zasoby.csv`, `zgodnosc_sesji.csv`,
 `odstajace.csv`) i są identyczne z plikami w `data/analiza/finalne/`.
+
+## Weryfikacja hipotez (wersja do pracy)
+
+```bash
+.venv/bin/python analiza/weryfikacja_hipotez.py
+```
+
+Każda z czterech hipotez dostaje tabelę 30 surowych prób: czasy i zasoby RN z `ses_04`, zasoby
+Ionica z `ses_07`. Na tej tabeli skrypt liczy średnią i współczynnik zmienności V, a potem przeprowadza
+procedurę weryfikacyjną według wzorów z wykładu. Najpierw Shapiro-Wilk (współczynniki a_i z tablicy).
+Jeśli obie grupy mają rozkład normalny, dochodzi Levene liczony z medianą, a dalej t-Studenta albo
+U Manna-Whitneya. Wartości krytyczne pochodzą z tablic.
+
+Sposób wyboru prób:
+
+- czas uruchamiania: 30 zimnych startów z S1;
+- czas reakcji: 5 rodzajów działań × 6 prób (iteracje 1, 6, 11, 16, 21, 26);
+- RAM i CPU: 3 scenariusze × 10 prób, gdzie próba to średnia z odczytów z kolejnej 1/10 czasu przebiegu.
+
+Wyniki są w `data/analiza/hipotezy/`:
+
+| Plik | Zawartość |
+|---|---|
+| `tab_1…tab_4_*.csv` | tabele surowych prób (separator `;`, przecinek dziesiętny) |
+| `ilosciowa.csv` | średnia, odchylenie standardowe, V, ocena stabilności |
+| `wyniki_weryfikacji.txt` | gotowe zdania do pracy: analiza ilościowa, statystyczna i wnioski |
+
+`--sesja ses_05` albo `--sesja ses_06` (zasoby Ionica z `ses_08` / `ses_09`) zapisuje wyniki do
+`kontrola_ses_XX/`. Te wyniki służą tylko do sprawdzenia, czy się powtarzają.
 
 ## Uruchomienie stanowiska
 

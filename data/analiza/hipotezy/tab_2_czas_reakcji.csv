@@ -1,0 +1,31 @@
+﻿Rodzaj działania;Nr próby;React Native [ms];Ionic [ms]
+Otwarcie szczegółów usługi;1;111,88;282,30
+Otwarcie szczegółów usługi;2;117,95;145,80
+Otwarcie szczegółów usługi;3;131,59;144,70
+Otwarcie szczegółów usługi;4;130,86;161,80
+Otwarcie szczegółów usługi;5;131,95;105,20
+Otwarcie szczegółów usługi;6;114,57;158,10
+Otwarcie szczegółów usługi po przewinięciu listy;7;114,69;288,60
+Otwarcie szczegółów usługi po przewinięciu listy;8;113,00;139,70
+Otwarcie szczegółów usługi po przewinięciu listy;9;136,52;148,20
+Otwarcie szczegółów usługi po przewinięciu listy;10;147,06;148,40
+Otwarcie szczegółów usługi po przewinięciu listy;11;113,56;149,20
+Otwarcie szczegółów usługi po przewinięciu listy;12;147,40;150,70
+Wysłanie zamówienia do API;13;50,47;94,60
+Wysłanie zamówienia do API;14;49,93;35,30
+Wysłanie zamówienia do API;15;66,18;33,50
+Wysłanie zamówienia do API;16;47,58;37,50
+Wysłanie zamówienia do API;17;50,28;41,10
+Wysłanie zamówienia do API;18;49,15;49,70
+Wyświetlenie ekranu po złożeniu zamówienia;19;74,09;87,40
+Wyświetlenie ekranu po złożeniu zamówienia;20;91,15;75,40
+Wyświetlenie ekranu po złożeniu zamówienia;21;84,51;68,20
+Wyświetlenie ekranu po złożeniu zamówienia;22;96,49;54,10
+Wyświetlenie ekranu po złożeniu zamówienia;23;85,66;55,70
+Wyświetlenie ekranu po złożeniu zamówienia;24;105,02;62,90
+Wyświetlenie historii zamówień;25;47,89;21,20
+Wyświetlenie historii zamówień;26;66,68;30,30
+Wyświetlenie historii zamówień;27;83,87;27,50
+Wyświetlenie historii zamówień;28;81,47;27,90
+Wyświetlenie historii zamówień;29;79,79;33,40
+Wyświetlenie historii zamówień;30;73,60;34,40
