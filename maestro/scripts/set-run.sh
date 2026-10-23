@@ -29,5 +29,5 @@ echo "✅ Ustawiono serię: $SESSION / $SCEN  (runId = ${SESSION}_${SCEN})"
 grep -H "SESSION_ID\|SCENARIO:" "$RN" "$IO" | sed 's/^/   /'
 echo
 echo "⚠️ Teraz PRZEBUDUJ obie aplikacje — konfiguracja jest wkompilowana:"
-echo "   cd shop-react-native && npx react-native run-android --mode=release --device \$DEVICE"
-echo "   cd shop-ionic && npm run build && npx cap sync android && (cd android && ./gradlew installDebug)"
+echo "   cd shop-react-native && npx react-native run-android --mode=release && cd .."
+echo "   cd shop-ionic && npm run build && npx cap sync android && (cd android && ./gradlew installRelease) && cd .."
