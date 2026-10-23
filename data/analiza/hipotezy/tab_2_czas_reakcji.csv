@@ -1,31 +1,31 @@
 ﻿Rodzaj działania;Nr próby;React Native [ms];Ionic [ms]
-Otwarcie szczegółów usługi;1;111,88;282,30
-Otwarcie szczegółów usługi;2;117,95;145,80
-Otwarcie szczegółów usługi;3;131,59;144,70
-Otwarcie szczegółów usługi;4;130,86;161,80
-Otwarcie szczegółów usługi;5;131,95;105,20
-Otwarcie szczegółów usługi;6;114,57;158,10
-Otwarcie szczegółów usługi po przewinięciu listy;7;114,69;288,60
-Otwarcie szczegółów usługi po przewinięciu listy;8;113,00;139,70
-Otwarcie szczegółów usługi po przewinięciu listy;9;136,52;148,20
-Otwarcie szczegółów usługi po przewinięciu listy;10;147,06;148,40
-Otwarcie szczegółów usługi po przewinięciu listy;11;113,56;149,20
-Otwarcie szczegółów usługi po przewinięciu listy;12;147,40;150,70
-Wysłanie zamówienia do API;13;50,47;94,60
-Wysłanie zamówienia do API;14;49,93;35,30
-Wysłanie zamówienia do API;15;66,18;33,50
-Wysłanie zamówienia do API;16;47,58;37,50
-Wysłanie zamówienia do API;17;50,28;41,10
-Wysłanie zamówienia do API;18;49,15;49,70
-Wyświetlenie ekranu po złożeniu zamówienia;19;74,09;87,40
-Wyświetlenie ekranu po złożeniu zamówienia;20;91,15;75,40
-Wyświetlenie ekranu po złożeniu zamówienia;21;84,51;68,20
-Wyświetlenie ekranu po złożeniu zamówienia;22;96,49;54,10
-Wyświetlenie ekranu po złożeniu zamówienia;23;85,66;55,70
-Wyświetlenie ekranu po złożeniu zamówienia;24;105,02;62,90
-Wyświetlenie historii zamówień;25;47,89;21,20
-Wyświetlenie historii zamówień;26;66,68;30,30
-Wyświetlenie historii zamówień;27;83,87;27,50
-Wyświetlenie historii zamówień;28;81,47;27,90
-Wyświetlenie historii zamówień;29;79,79;33,40
-Wyświetlenie historii zamówień;30;73,60;34,40
+Otwarcie szczegółów usługi;1;98,58;139,90
+Otwarcie szczegółów usługi;2;113,98;131,80
+Otwarcie szczegółów usługi;3;131,27;149,30
+Otwarcie szczegółów usługi;4;130,42;139,50
+Otwarcie szczegółów usługi;5;131,64;159,30
+Otwarcie szczegółów usługi;6;140,08;167,00
+Otwarcie szczegółów usługi po przewinięciu listy;7;115,94;158,80
+Otwarcie szczegółów usługi po przewinięciu listy;8;113,85;154,80
+Otwarcie szczegółów usługi po przewinięciu listy;9;114,13;148,10
+Otwarcie szczegółów usługi po przewinięciu listy;10;113,85;151,50
+Otwarcie szczegółów usługi po przewinięciu listy;11;113,64;171,60
+Otwarcie szczegółów usługi po przewinięciu listy;12;130,40;162,40
+Wysłanie zamówienia do API;13;49,26;39,70
+Wysłanie zamówienia do API;14;50,47;44,10
+Wysłanie zamówienia do API;15;66,09;37,50
+Wysłanie zamówienia do API;16;66,42;45,40
+Wysłanie zamówienia do API;17;68,52;60,80
+Wysłanie zamówienia do API;18;68,83;37,50
+Wyświetlenie ekranu po złożeniu zamówienia;19;86,52;75,80
+Wyświetlenie ekranu po złożeniu zamówienia;20;84,57;73,90
+Wyświetlenie ekranu po złożeniu zamówienia;21;97,28;67,50
+Wyświetlenie ekranu po złożeniu zamówienia;22;85,99;60,80
+Wyświetlenie ekranu po złożeniu zamówienia;23;101,98;69,80
+Wyświetlenie ekranu po złożeniu zamówienia;24;105,19;61,80
+Wyświetlenie historii zamówień;25;50,45;18,50
+Wyświetlenie historii zamówień;26;101,12;19,30
+Wyświetlenie historii zamówień;27;80,48;21,40
+Wyświetlenie historii zamówień;28;95,39;33,40
+Wyświetlenie historii zamówień;29;77,88;19,60
+Wyświetlenie historii zamówień;30;75,36;38,80

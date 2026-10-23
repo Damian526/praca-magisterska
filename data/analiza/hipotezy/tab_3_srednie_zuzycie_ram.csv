@@ -1,31 +1,31 @@
 ﻿Rodzaj działania;Nr próby;React Native [MB];Ionic [MB]
-Uruchamianie aplikacji;1;150,04;173,96
-Uruchamianie aplikacji;2;152,26;180,70
-Uruchamianie aplikacji;3;144,60;178,14
-Uruchamianie aplikacji;4;138,15;182,51
-Uruchamianie aplikacji;5;135,58;178,15
-Uruchamianie aplikacji;6;134,66;176,06
-Uruchamianie aplikacji;7;147,91;180,76
-Uruchamianie aplikacji;8;149,97;181,30
-Uruchamianie aplikacji;9;135,81;178,42
-Uruchamianie aplikacji;10;146,68;188,33
-Przeglądanie szczegółów usługi;11;148,38;204,37
-Przeglądanie szczegółów usługi;12;150,18;226,25
-Przeglądanie szczegółów usługi;13;150,67;218,52
-Przeglądanie szczegółów usługi;14;151,09;216,75
-Przeglądanie szczegółów usługi;15;151,62;214,15
-Przeglądanie szczegółów usługi;16;152,04;212,87
-Przeglądanie szczegółów usługi;17;152,34;216,45
-Przeglądanie szczegółów usługi;18;152,35;218,13
-Przeglądanie szczegółów usługi;19;152,15;217,46
-Przeglądanie szczegółów usługi;20;152,31;216,00
-Ścieżka zakupowa;21;198,46;228,15
-Ścieżka zakupowa;22;214,00;242,75
-Ścieżka zakupowa;23;219,44;241,21
-Ścieżka zakupowa;24;224,88;243,11
-Ścieżka zakupowa;25;230,23;242,84
-Ścieżka zakupowa;26;233,55;244,33
-Ścieżka zakupowa;27;232,98;246,30
-Ścieżka zakupowa;28;233,54;249,53
-Ścieżka zakupowa;29;231,82;250,46
-Ścieżka zakupowa;30;230,86;248,82
+Uruchamianie aplikacji;1;137,27;181,39
+Uruchamianie aplikacji;2;130,99;173,18
+Uruchamianie aplikacji;3;133,83;179,25
+Uruchamianie aplikacji;4;139,07;177,53
+Uruchamianie aplikacji;5;140,20;169,77
+Uruchamianie aplikacji;6;134,08;166,17
+Uruchamianie aplikacji;7;138,75;169,46
+Uruchamianie aplikacji;8;132,02;176,59
+Uruchamianie aplikacji;9;138,56;180,39
+Uruchamianie aplikacji;10;140,37;180,29
+Przeglądanie szczegółów usługi;11;151,17;231,32
+Przeglądanie szczegółów usługi;12;148,06;232,17
+Przeglądanie szczegółów usługi;13;146,02;237,40
+Przeglądanie szczegółów usługi;14;146,11;223,24
+Przeglądanie szczegółów usługi;15;143,90;224,17
+Przeglądanie szczegółów usługi;16;144,67;221,21
+Przeglądanie szczegółów usługi;17;146,24;228,54
+Przeglądanie szczegółów usługi;18;150,70;224,16
+Przeglądanie szczegółów usługi;19;149,29;241,51
+Przeglądanie szczegółów usługi;20;147,15;242,33
+Ścieżka zakupowa;21;197,45;235,62
+Ścieżka zakupowa;22;198,82;255,59
+Ścieżka zakupowa;23;201,30;259,82
+Ścieżka zakupowa;24;197,95;253,24
+Ścieżka zakupowa;25;202,03;237,27
+Ścieżka zakupowa;26;194,56;239,88
+Ścieżka zakupowa;27;196,89;245,00
+Ścieżka zakupowa;28;199,38;253,24
+Ścieżka zakupowa;29;197,02;238,68
+Ścieżka zakupowa;30;197,20;252,84
